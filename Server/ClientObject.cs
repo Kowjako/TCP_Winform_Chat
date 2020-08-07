@@ -22,6 +22,7 @@ namespace Server
         private static FileDetails fileDet = new FileDetails();
         protected internal string Id { get; set; }
         protected internal NetworkStream stream { get; set; }
+        static object locker = new object();
         static TcpClient client;
         Server server;
         Random rnd = new Random();
@@ -79,21 +80,25 @@ namespace Server
                 Console.WriteLine(username + "connected :)");
                 while (true)
                 {
+
                     string servermsg = "";
                     string msg = GetMessage();
                     try
                     {
                         string output = new string(msg.Where(c => char.IsLetter(c) || char.IsDigit(c) || char.IsSymbol(c) || char.IsSeparator(c) || char.IsPunctuation(c)).ToArray());
                         if (output == "photo")
-                        {  
-                            GetFileDetails();
-                            servermsg = String.Format("{0}: {1}, {2}, {3}", username, output, "ok", fileDet.FILETYPE);
-                            output = "";
-                            Console.WriteLine(servermsg);
-                            GetImage();
-                            Console.WriteLine("Получен файл типа " + fileDet.FILETYPE + " имеющий размер " + fileDet.FILESIZE + " байт");
-                            server.SendPhoto(fileDet, $"image{mark}{fileDet.FILETYPE}", Id);
-                            Console.WriteLine("photo has sent");
+                        {
+                            lock (locker)
+                            {
+                                GetFileDetails();
+                                servermsg = String.Format("{0}: {1}, {2}, {3}", username, output, "ok", fileDet.FILETYPE);
+                                output = "";
+                                Console.WriteLine(servermsg);
+                                GetImage();
+                                Console.WriteLine("Получен файл типа " + fileDet.FILETYPE + " имеющий размер " + fileDet.FILESIZE + " байт");
+                                server.SendPhoto(fileDet, $"image{mark}{fileDet.FILETYPE}", Id);
+                                Console.WriteLine("photo has sent");
+                            }
                         }
                         else
                         {

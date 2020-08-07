@@ -8,19 +8,16 @@ using System.Text;
 using System.Threading;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using static Server.ClientObject;
+
 namespace Server
 {
     public class Server
     {
-        [Serializable]
-        public class FileDetails
-        {
-            public string FILETYPE = "";
-            public string FILESIZE = "";
-        }
         static TcpListener listener;
         private FileDetails fileData = new FileDetails();
         List<ClientObject> clients = new List<ClientObject>();
+        static object locker = new object();
         protected internal void AddConnection(ClientObject x)
         {
             if (clients.Count < 2)
@@ -34,8 +31,9 @@ namespace Server
                 if (x.Id != id) x.stream.Write(data, 0, data.Length);
             }
         }
-        protected internal void SendPhoto(ClientObject.FileDetails fd, string fs,string id)
+        protected internal void SendPhoto(FileDetails fd, string fs,string id)
         {
+            FileStream fstream = File.Open(fs, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
             foreach (ClientObject x in clients)
             {
                 if (x.Id != id)
@@ -43,7 +41,7 @@ namespace Server
                     try
                     {
                         byte[] data = Encoding.UTF8.GetBytes(fs);
-                        x.stream.Write(data, 0, data.Length); 
+                        x.stream.Write(data, 0, data.Length);
                     }
                     catch
                     {
@@ -56,7 +54,7 @@ namespace Server
                         //Send metadata//
                         string json = JsonConvert.SerializeObject(fileData);
                         Console.WriteLine($"send metadata {json}");
-                        Byte[] bytes = Encoding.UTF8.GetBytes(json);
+                        byte[] bytes = Encoding.UTF8.GetBytes(json);
                         x.stream.Write(bytes, 0, bytes.Length);
                     }
                     catch
@@ -67,18 +65,24 @@ namespace Server
                     try
                     {
                         Console.WriteLine($"Server fs = {fs}");
-                        FileStream fstream = File.Open(fs, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
                         byte[] bites = new byte[255];
                         int size = 0;
+                        int i = 0;
                         while ((size = fstream.Read(bites, 0, bites.Length)) > 0)
                         {
+                            Console.WriteLine($"Sending {i} part of file");
                             x.stream.Write(bites, 0, size);
-                        }
-                        fstream.Close();
+                            i++;
+                        }                        
+                        Console.WriteLine("100% file sended");
                     }
                     catch
                     {
                         Console.WriteLine("Sending file error");
+                    }
+                    finally
+                    {
+                        fstream.Close();
                     }
                 }
             }

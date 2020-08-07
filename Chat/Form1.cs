@@ -22,6 +22,7 @@ namespace Chat
             public string FILETYPE = "";
             public string FILESIZE = "";
         }
+        static object locker = new object();
         List<MyBubble> msglist = new List<MyBubble>();
         List<GetBubble> receivelist = new List<GetBubble>();
         List<SendImage> photolist = new List<SendImage>();
@@ -32,7 +33,6 @@ namespace Chat
         private static TcpClient client;
         protected static NetworkStream stream;
         private FileDetails fileDet = new FileDetails();
-        private static FileStream fs;
         private static string gettedMessage = "";
         private static string path = "";
         private static string fileName = "";
@@ -46,7 +46,7 @@ namespace Chat
             t.Start();
             stream = client.GetStream();
         }
-        
+
         private void Form1_Load(object sender, EventArgs e)
         {
             nameLbl.Text = $"User{rnd.Next(100)}";
@@ -64,7 +64,7 @@ namespace Chat
             panel3.Controls.Add(ts);
             timer1.Start();
         }
-        
+
         private bool CheckScrollBar()
         {
             if (panel3.VerticalScroll.Visible == true)
@@ -82,7 +82,7 @@ namespace Chat
             }
             return false;
         }
-        
+
         private void AddBubble()
         {
             MyBubble msg = new MyBubble();
@@ -122,37 +122,82 @@ namespace Chat
         {
             try
             {
+                StringBuilder sb = new StringBuilder();
                 byte[] receiveBytes = new byte[255];
                 do
                 {
                     int bytes = stream.Read(receiveBytes, 0, receiveBytes.Length);
+                    sb.Append(Encoding.UTF8.GetString(receiveBytes));
                 }
                 while (stream.DataAvailable);
-                string json = Encoding.UTF8.GetString(receiveBytes);
-                altoTextBox1.Text = json;
+                int startindex = sb.ToString().IndexOf('{');
+                int endindex = sb.ToString().IndexOf('}');
+                string json = sb.ToString().Substring(startindex, endindex - startindex + 1);
                 fileDet = JsonConvert.DeserializeObject<FileDetails>(json);
             }
             catch (Exception ex)
             {
-                //altoTextBox1.Text = $"GetFileDetails Error";
+                altoTextBox1.Text = $"GetFileDetails Error";
             }
         }
         public void GetFile()
-        {    
+        {
+            FileStream fs = new FileStream(fileName, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.ReadWrite);
             try
             {
+                int i = 0;
                 byte[] receiveBytes = new byte[255];
-                fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+                
                 while (fs.Length != Convert.ToInt64(fileDet.FILESIZE))
                 {
+                    altoTextBox1.Text = $"{i} part of file received";
+                    altoButton1.Enabled = false;
+                    altoButton3.Enabled = false;
                     int bytes = stream.Read(receiveBytes, 0, receiveBytes.Length);
                     fs.Write(receiveBytes, 0, bytes);
+                    i++;
                 }
-                fs.Close();
             }
             catch (Exception eR)
             {
-                Console.WriteLine(eR.ToString());
+                altoTextBox1.Text = eR.Message;
+            }
+            finally
+            {
+                fs.Close();
+                altoButton3.Enabled = true;
+                altoButton1.Enabled = true;
+            }
+        }
+        public void SendFileInfo(FileStream fs)
+        {
+            try
+            {
+                fileDet.FILETYPE = Path.GetExtension(fs.Name);
+                fileDet.FILESIZE = Convert.ToString(fs.Length);
+                string json = JsonConvert.SerializeObject(fileDet);
+                byte[] bytes = Encoding.UTF8.GetBytes(json);
+                stream.Write(bytes, 0, bytes.Length);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        private void SendFile(FileStream fs)
+        {
+            byte[] bytes = new byte[255];
+            int size = 0;
+            try
+            {
+                while ((size = fs.Read(bytes, 0, bytes.Length)) > 0)
+                {
+                    stream.Write(bytes, 0, size);
+                }
+                fs.Close();
+            }
+            catch
+            {
+                altoTextBox1.Text = "Sending file error";
             }
         }
         private void panel2_MouseDown(object sender, MouseEventArgs e)
@@ -186,7 +231,7 @@ namespace Chat
         }
         private void altoTextBox1_Enter(object sender, EventArgs e)
         {
-            if(altoTextBox1.Text=="Write message")
+            if (altoTextBox1.Text == "Write message")
             {
                 altoTextBox1.ForeColor = Color.Black;
                 altoTextBox1.Text = "";
@@ -218,7 +263,7 @@ namespace Chat
             }
         }
         private void altoTextBox2_TextChanged(object sender, EventArgs e)
-        {   
+        {
             statusLbl.Text = "typing...";
         }
         private string sendmsg = "";
@@ -246,45 +291,14 @@ namespace Chat
                 fileName = "";
             }
         }
-        public void SendFileInfo()
-        {
-            try
-            {
-                fileDet.FILETYPE = Path.GetExtension(fs.Name);
-                fileDet.FILESIZE = Convert.ToString(fs.Length);
-                string json = JsonConvert.SerializeObject(fileDet);
-                Byte[] bytes = Encoding.UTF8.GetBytes(json);
-                stream.Write(bytes, 0, bytes.Length);
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-        private void SendFile()
-        {
-            byte[] bytes = new byte[255];
-            int size = 0;
-            try
-            {
-                while ((size = fs.Read(bytes, 0, bytes.Length)) > 0)
-                {
-                    stream.Write(bytes, 0, size);
-                }
-                fs.Close();
-            }
-            catch
-            {
-                altoTextBox1.Text = "Sending file error";
-            }
-        }
         private void altoButton3_Click(object sender, EventArgs e)
         {
             byte[] bytes = Encoding.UTF8.GetBytes("photo");
             stream.Write(bytes, 0, bytes.Length);
             SendImage image = new SendImage();
-            fs = new FileStream(image.SetImage(), FileMode.Open, FileAccess.Read);
-            SendFileInfo();
-            SendFile();
+            FileStream fs = new FileStream(image.SetImage(), FileMode.Open, FileAccess.Read);
+            SendFileInfo(fs);
+            SendFile(fs);
             if (panel3.VerticalScroll.Visible == true) image.Left = 270;
             else image.Left = 285;
             image.Top = getPosition();
@@ -310,14 +324,17 @@ namespace Chat
                 string output = new string(gettedMessage.Where(c => char.IsLetter(c) || char.IsDigit(c) || char.IsSymbol(c) || char.IsSeparator(c) || char.IsPunctuation(c)).ToArray());
                 if (output.Contains("image"))
                 {
-                    gettedMessage = "";
-                    fileName = output;
-                    GetFileDetails();
-                    GetFile(); 
-                    path = $"{output}";
-                    
+                    lock (locker)
+                    {
+                        gettedMessage = "";
+                        fileName = output;
+                        GetFileDetails();
+                        GetFile();
+                        path = $"{output}";
+                    }
                 }
             }
         }
     }
 }
+
