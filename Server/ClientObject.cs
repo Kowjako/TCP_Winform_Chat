@@ -22,7 +22,6 @@ namespace Server
         private static FileDetails fileDet = new FileDetails();
         protected internal string Id { get; set; }
         protected internal NetworkStream stream { get; set; }
-        static object locker = new object();
         static TcpClient client;
         Server server;
         Random rnd = new Random();
@@ -37,7 +36,7 @@ namespace Server
         {
             try
             {
-                Byte[] receiveBytes = new Byte[255];
+                Byte[] receiveBytes = new Byte[256];
                 do
                 {
                     int bytes = stream.Read(receiveBytes, 0, receiveBytes.Length);
@@ -48,28 +47,34 @@ namespace Server
             }
             catch (Exception ex)
             {
-                Console.WriteLine("GetFileDetails Error ClientObject");
+                Console.WriteLine("GetFileDetails Error in ClientObject class");
             }
         }
-        public static int mark;
+        public static int mark = 0;
         public void GetImage()
         {
-            Byte[] receiveBytes = new Byte[255];
             mark = rnd.Next(1000, 9999);
+            FileStream fs = new FileStream($"image{mark}" + fileDet.FILETYPE, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+            Byte[] receiveBytes = new Byte[256];            
             try
             {
-                FileStream fs = new FileStream($"image{mark}" + fileDet.FILETYPE, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-                while (fs.Length != Convert.ToInt64(fileDet.FILESIZE))
+                do
                 {
                     int bytes = stream.Read(receiveBytes, 0, receiveBytes.Length);
                     fs.Write(receiveBytes, 0, bytes);
                 }
+                while (fs.Length != Convert.ToInt64(fileDet.FILESIZE));
                 fs.Close();
             }
             catch (Exception eR)
             {
-                Console.WriteLine(eR.ToString() + "GETIMAGEERROR");
+                Console.WriteLine(eR.ToString() + " GET IMAGE ERROR");
             }
+        }
+        private void SendPhoto()
+        {
+            server.SendPhoto(fileDet, $"image{mark}{fileDet.FILETYPE}", Id);
+            Console.WriteLine("photo has sent");
         }
         public void Process()
         {
@@ -80,7 +85,6 @@ namespace Server
                 Console.WriteLine(username + "connected :)");
                 while (true)
                 {
-
                     string servermsg = "";
                     string msg = GetMessage();
                     try
@@ -88,17 +92,13 @@ namespace Server
                         string output = new string(msg.Where(c => char.IsLetter(c) || char.IsDigit(c) || char.IsSymbol(c) || char.IsSeparator(c) || char.IsPunctuation(c)).ToArray());
                         if (output == "photo")
                         {
-                            lock (locker)
-                            {
-                                GetFileDetails();
-                                servermsg = String.Format("{0}: {1}, {2}, {3}", username, output, "ok", fileDet.FILETYPE);
-                                output = "";
-                                Console.WriteLine(servermsg);
-                                GetImage();
-                                Console.WriteLine("Получен файл типа " + fileDet.FILETYPE + " имеющий размер " + fileDet.FILESIZE + " байт");
-                                server.SendPhoto(fileDet, $"image{mark}{fileDet.FILETYPE}", Id);
-                                Console.WriteLine("photo has sent");
-                            }
+                            GetFileDetails();
+                            servermsg = String.Format("{0}: {1}, {2}, {3}", username, output, "ok", fileDet.FILETYPE);
+                            output = "";
+                            Console.WriteLine(servermsg);
+                            GetImage();
+                            Console.WriteLine("Получен файл типа " + fileDet.FILETYPE + " имеющий размер " + fileDet.FILESIZE + " байт");
+                            SendPhoto();
                         }
                         else
                         {
@@ -113,11 +113,11 @@ namespace Server
                         Console.WriteLine(servermsg);
                         break;
                     }
-                }
+                } 
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Global Error!");
+                Console.WriteLine($"Global Error! {ex.Message}");
             }
             finally
             {

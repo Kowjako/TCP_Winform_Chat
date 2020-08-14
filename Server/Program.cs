@@ -10,16 +10,16 @@ namespace Server
 {
     class Program
     {
-            static Server server;
-            static Thread listenThread;
-            static void Main()
-            {
+        static Server server;
+        static Thread listenThread;
+        static void Main()
+        {
             handler = new ConsoleEventDelegate(ConsoleEventCallback);
             SetConsoleCtrlHandler(handler, true);
             server = new Server();
-                listenThread = new Thread(new ThreadStart(server.Listen));
-                listenThread.Start();
-            }
+            listenThread = new Thread(new ThreadStart(server.Listen));
+            listenThread.Start();
+        }
         static bool ConsoleEventCallback(int eventType)
         {
             if (eventType == 2)

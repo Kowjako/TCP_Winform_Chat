@@ -11,13 +11,13 @@ using Newtonsoft.Json;
 using static Server.ClientObject;
 
 namespace Server
-{
+{  
     public class Server
     {
         static TcpListener listener;
         private FileDetails fileData = new FileDetails();
         List<ClientObject> clients = new List<ClientObject>();
-        static object locker = new object();
+        public static object locker = new object();
         protected internal void AddConnection(ClientObject x)
         {
             if (clients.Count < 2)
@@ -25,65 +25,29 @@ namespace Server
         }
         protected internal void BroadcastMessage(string msg, string id)
         {
-            byte[] data = Encoding.UTF8.GetBytes(msg);
             foreach (ClientObject x in clients)
             {
-                if (x.Id != id) x.stream.Write(data, 0, data.Length);
+                if (x.Id != id)
+                {
+                    BinaryWriter bw = new BinaryWriter(x.stream);
+                    bw.Write(msg);
+                }
             }
         }
-        protected internal void SendPhoto(FileDetails fd, string fs,string id)
+        protected internal void SendPhoto(FileDetails fd, string fs, string id)
         {
             FileStream fstream = File.Open(fs, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
             foreach (ClientObject x in clients)
             {
                 if (x.Id != id)
                 {
-                    try
-                    {
-                        byte[] data = Encoding.UTF8.GetBytes(fs);
-                        x.stream.Write(data, 0, data.Length);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Sending imagemsg error");
-                    }
-                    try
-                    {
-                        fileData.FILESIZE = fd.FILESIZE;
-                        fileData.FILETYPE = fd.FILETYPE;
-                        //Send metadata//
-                        string json = JsonConvert.SerializeObject(fileData);
-                        Console.WriteLine($"send metadata {json}");
-                        byte[] bytes = Encoding.UTF8.GetBytes(json);
-                        x.stream.Write(bytes, 0, bytes.Length);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Sending metadata error");
-                    }
-                    //Send Photo//
-                    try
-                    {
-                        Console.WriteLine($"Server fs = {fs}");
-                        byte[] bites = new byte[255];
-                        int size = 0;
-                        int i = 0;
-                        while ((size = fstream.Read(bites, 0, bites.Length)) > 0)
-                        {
-                            Console.WriteLine($"Sending {i} part of file");
-                            x.stream.Write(bites, 0, size);
-                            i++;
-                        }                        
-                        Console.WriteLine("100% file sended");
-                    }
-                    catch
-                    {
-                        Console.WriteLine("Sending file error");
-                    }
-                    finally
-                    {
-                        fstream.Close();
-                    }
+                    BinaryWriter writer = new BinaryWriter(x.stream);
+                    writer.Write(fs); //send that it is image
+                    writer.Write(fs); //send filename
+                    writer.Write(Convert.ToInt32(fd.FILESIZE)); //send filesize
+                    byte[] bites = new byte[fstream.Length];
+                    int size = fstream.Read(bites, 0, bites.Length);
+                    writer.Write(bites); // send ImageData
                 }
             }
         }

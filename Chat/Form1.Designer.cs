@@ -29,11 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.altoTextBox1 = new AltoControls.AltoTextBox();
-            this.altoButton3 = new AltoControls.AltoButton();
             this.altoButton1 = new AltoControls.AltoButton();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.altoButton3 = new System.Windows.Forms.PictureBox();
+            this.altoTextBox1 = new AltoControls.AltoTextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.statusLbl = new System.Windows.Forms.Label();
@@ -42,6 +45,9 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.altoButton3)).BeginInit();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,49 +65,17 @@
             // 
             // panel4
             // 
-            this.panel4.Controls.Add(this.altoTextBox1);
-            this.panel4.Controls.Add(this.altoButton3);
+            this.panel4.BackColor = System.Drawing.Color.White;
             this.panel4.Controls.Add(this.altoButton1);
+            this.panel4.Controls.Add(this.pictureBox2);
+            this.panel4.Controls.Add(this.pictureBox1);
+            this.panel4.Controls.Add(this.altoButton3);
+            this.panel4.Controls.Add(this.altoTextBox1);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel4.Location = new System.Drawing.Point(0, 663);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(538, 38);
             this.panel4.TabIndex = 0;
-            // 
-            // altoTextBox1
-            // 
-            this.altoTextBox1.BackColor = System.Drawing.Color.Transparent;
-            this.altoTextBox1.Br = System.Drawing.Color.White;
-            this.altoTextBox1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.altoTextBox1.ForeColor = System.Drawing.Color.DimGray;
-            this.altoTextBox1.Location = new System.Drawing.Point(3, 5);
-            this.altoTextBox1.Name = "altoTextBox1";
-            this.altoTextBox1.Size = new System.Drawing.Size(426, 30);
-            this.altoTextBox1.TabIndex = 0;
-            this.altoTextBox1.Text = "Write message";
-            this.altoTextBox1.Enter += new System.EventHandler(this.altoTextBox1_Enter);
-            this.altoTextBox1.Leave += new System.EventHandler(this.altoTextBox1_Leave);
-            // 
-            // altoButton3
-            // 
-            this.altoButton3.Active1 = System.Drawing.Color.DarkGray;
-            this.altoButton3.Active2 = System.Drawing.Color.Silver;
-            this.altoButton3.BackColor = System.Drawing.Color.Transparent;
-            this.altoButton3.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.altoButton3.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold);
-            this.altoButton3.ForeColor = System.Drawing.Color.Black;
-            this.altoButton3.Inactive1 = System.Drawing.Color.White;
-            this.altoButton3.Inactive2 = System.Drawing.Color.White;
-            this.altoButton3.Location = new System.Drawing.Point(483, 5);
-            this.altoButton3.Name = "altoButton3";
-            this.altoButton3.Radius = 10;
-            this.altoButton3.Size = new System.Drawing.Size(46, 30);
-            this.altoButton3.Stroke = false;
-            this.altoButton3.StrokeColor = System.Drawing.Color.Gray;
-            this.altoButton3.TabIndex = 1;
-            this.altoButton3.Text = "File";
-            this.altoButton3.Transparency = false;
-            this.altoButton3.Click += new System.EventHandler(this.altoButton3_Click);
             // 
             // altoButton1
             // 
@@ -111,24 +85,76 @@
             this.altoButton1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.altoButton1.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold);
             this.altoButton1.ForeColor = System.Drawing.Color.Black;
-            this.altoButton1.Inactive1 = System.Drawing.Color.White;
-            this.altoButton1.Inactive2 = System.Drawing.Color.White;
-            this.altoButton1.Location = new System.Drawing.Point(435, 5);
+            this.altoButton1.Inactive1 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.altoButton1.Inactive2 = System.Drawing.SystemColors.ButtonFace;
+            this.altoButton1.Location = new System.Drawing.Point(489, 5);
             this.altoButton1.Name = "altoButton1";
             this.altoButton1.Radius = 10;
-            this.altoButton1.Size = new System.Drawing.Size(42, 30);
+            this.altoButton1.Size = new System.Drawing.Size(46, 30);
             this.altoButton1.Stroke = false;
-            this.altoButton1.StrokeColor = System.Drawing.Color.Gray;
+            this.altoButton1.StrokeColor = System.Drawing.Color.Transparent;
             this.altoButton1.TabIndex = 0;
             this.altoButton1.Text = "Send";
             this.altoButton1.Transparency = false;
             this.altoButton1.Click += new System.EventHandler(this.altoButton1_Click);
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.White;
+            this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(438, 5);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(34, 31);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 4;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.White;
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(398, 5);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(34, 31);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
+            // 
+            // altoButton3
+            // 
+            this.altoButton3.BackColor = System.Drawing.Color.White;
+            this.altoButton3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.altoButton3.Image = ((System.Drawing.Image)(resources.GetObject("altoButton3.Image")));
+            this.altoButton3.Location = new System.Drawing.Point(358, 5);
+            this.altoButton3.Name = "altoButton3";
+            this.altoButton3.Size = new System.Drawing.Size(34, 31);
+            this.altoButton3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.altoButton3.TabIndex = 2;
+            this.altoButton3.TabStop = false;
+            this.altoButton3.Click += new System.EventHandler(this.altoButton3_Click_1);
+            // 
+            // altoTextBox1
+            // 
+            this.altoTextBox1.BackColor = System.Drawing.Color.Transparent;
+            this.altoTextBox1.Br = System.Drawing.Color.White;
+            this.altoTextBox1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.altoTextBox1.ForeColor = System.Drawing.Color.DimGray;
+            this.altoTextBox1.Location = new System.Drawing.Point(3, 3);
+            this.altoTextBox1.Name = "altoTextBox1";
+            this.altoTextBox1.Size = new System.Drawing.Size(480, 35);
+            this.altoTextBox1.TabIndex = 0;
+            this.altoTextBox1.Text = "Write message";
+            this.altoTextBox1.Enter += new System.EventHandler(this.altoTextBox1_Enter);
+            this.altoTextBox1.Leave += new System.EventHandler(this.altoTextBox1_Leave);
+            // 
             // panel3
             // 
             this.panel3.Location = new System.Drawing.Point(0, 59);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(538, 603);
+            this.panel3.Size = new System.Drawing.Size(538, 604);
             this.panel3.TabIndex = 1;
             // 
             // panel2
@@ -206,6 +232,9 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.altoButton3)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
@@ -224,7 +253,9 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label statusLbl;
         private System.Windows.Forms.Timer timer1;
-        private AltoControls.AltoButton altoButton3;
+        private System.Windows.Forms.PictureBox altoButton3;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
