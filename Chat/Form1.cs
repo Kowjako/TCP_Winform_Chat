@@ -27,6 +27,7 @@ namespace Chat
         List<MyBubble> msglist = new List<MyBubble>();
         List<GetBubble> receivelist = new List<GetBubble>();
         List<SendImage> photolist = new List<SendImage>();
+        List<SendFile> filelist = new List<SendFile>();
         Random rnd = new Random();
         BinaryReader reader;
         BinaryWriter writer;
@@ -37,8 +38,9 @@ namespace Chat
         protected static NetworkStream stream;
         private FileDetails fileDet = new FileDetails();
         private static string gettedMessage = "";
-        private string path = "";
+        private string path = "",filepath = "";
         private static SendImage image;
+        private static SendFile file;
         public Form1()
         {
             InitializeComponent();
@@ -83,6 +85,12 @@ namespace Chat
                     else
                     if (img.Left != 270) img.Left = 270;
                 }
+                foreach (SendFile file in filelist)
+                {
+                    if (file.Left == 5) continue;
+                    else
+                    if (file.Left != 270) file.Left = 270;
+                }
                 return true;
             }
             return false;
@@ -105,7 +113,7 @@ namespace Chat
         }
         private int getPosition()
         {
-            if (msglist.Count == 0 && receivelist.Count == 0 && photolist.Count == 0) return 30;
+            if (msglist.Count == 0 && receivelist.Count == 0 && photolist.Count == 0 && filelist.Count == 0) return 30;
             if (lastObject is MyBubble)
             {
                 MyBubble tmp = (MyBubble)lastObject;
@@ -119,6 +127,11 @@ namespace Chat
             if (lastObject is SendImage)
             {
                 SendImage tmp = (SendImage)lastObject;
+                return tmp.Top + tmp.Height;
+            }
+            if (lastObject is SendFile)
+            {
+                SendFile tmp = (SendFile)lastObject;
                 return tmp.Top + tmp.Height;
             }
             else return 0;
@@ -248,7 +261,23 @@ namespace Chat
                 path = "";
                 CheckScrollBar();
             }
+            if (filepath != "")
+            {
+                file = new SendFile();
+                file.SetFile(filepath);
+                file.FileName = filepath;
+                file.FileSize = fileSizeString;
+                file.Left = 5;
+                file.Top = getPosition();
+                file.AddTimeLabelGetter();
+                panel3.Controls.Add(file);
+                lastObject = file;
+                filelist.Add(file);
+                filepath = "";
+                CheckScrollBar();
+            }
         }
+        private string fileSizeString = null;
         public void ReceiveMessage()
         {
             while (true)
@@ -268,7 +297,23 @@ namespace Chat
                 }
                 else
                 {
-                    gettedMessage = messageType;
+                    if (messageType.Contains("file"))
+                    {
+                        string fileName = reader.ReadString();
+                        int fileSize = reader.ReadInt32(); // 2 GB max
+                        fileSizeString = Convert.ToString(fileSize);
+                        byte[] imageData = reader.ReadBytes(fileSize);
+                        using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
+                        {
+                            fs.Write(imageData, 0, imageData.Length);
+                        }
+                        filepath = fileName;
+                        
+                    }
+                    else
+                    {
+                        gettedMessage = messageType;
+                    }
                 }
             }   
         }
@@ -297,6 +342,33 @@ namespace Chat
                 pictureBox2.Image = Properties.Resources.record;
             if (pictureBox2.Image == Properties.Resources.record)
                 pictureBox2.Image = Properties.Resources.startrecord;
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes("attachment");
+            stream.Write(bytes, 0, bytes.Length);
+            SendFile file = new SendFile();
+            FileStream fs = new FileStream(file.SetFile(), FileMode.Open, FileAccess.Read);
+            file.SetFile(fs.Name);
+            file.FileName = getNameOfFile(fs.Name);
+            file.FileSize = Convert.ToString(fs.Length);
+            SendFileInfo(fs);
+            SendFile(fs);
+            fs.Close();
+            file.Left = 285;
+            CheckScrollBar();
+            file.Top = getPosition();
+            file.AddTimeLabelSender();
+            panel3.Controls.Add(file);
+            lastObject = file;
+            filelist.Add(file);
+        }
+        private string getNameOfFile(string path)
+        {
+            int index = path.LastIndexOf(@"\");
+            path = path.Replace(" ", string.Empty);
+            return path.Substring(index+1);
         }
     }
 }

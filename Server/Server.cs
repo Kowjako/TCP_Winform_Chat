@@ -51,6 +51,24 @@ namespace Server
                 }
             }
         }
+        protected internal void SendFile(FileDetails fd, string fs, string id)
+        {
+            FileStream fstream = File.Open(fs, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            foreach (ClientObject x in clients)
+            {
+                if (x.Id != id)
+                {
+                    string tmp = fs.Insert(0, "my");
+                    BinaryWriter writer = new BinaryWriter(x.stream);
+                    writer.Write(fs); //send that it is image
+                    writer.Write(tmp); //send filename
+                    writer.Write(Convert.ToInt32(fd.FILESIZE)); //send filesize
+                    byte[] bites = new byte[fstream.Length];
+                    int size = fstream.Read(bites, 0, bites.Length);
+                    writer.Write(bites); // send ImageData
+                }
+            }
+        }
         protected internal void RemoveConnection(string id)
         {
             ClientObject tmp = clients.FirstOrDefault(c => c.Id == id);

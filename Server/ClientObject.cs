@@ -71,9 +71,34 @@ namespace Server
                 Console.WriteLine(eR.ToString() + " GET IMAGE ERROR");
             }
         }
+        public void GetFile()
+        {
+            mark = rnd.Next(1000, 9999);
+            FileStream fs = new FileStream($"file{mark}" + fileDet.FILETYPE, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+            Byte[] receiveBytes = new Byte[256];
+            try
+            {
+                do
+                {
+                    int bytes = stream.Read(receiveBytes, 0, receiveBytes.Length);
+                    fs.Write(receiveBytes, 0, bytes);
+                }
+                while (fs.Length != Convert.ToInt64(fileDet.FILESIZE));
+                fs.Close();
+            }
+            catch (Exception eR)
+            {
+                Console.WriteLine(eR.ToString() + " GET IMAGE ERROR");
+            }
+        }
         private void SendPhoto()
         {
             server.SendPhoto(fileDet, $"image{mark}{fileDet.FILETYPE}", Id);
+            Console.WriteLine("photo has sent");
+        }
+        private void SendFile()
+        {
+            server.SendFile(fileDet, $"file{mark}{fileDet.FILETYPE}", Id);
             Console.WriteLine("photo has sent");
         }
         public void Process()
@@ -102,10 +127,23 @@ namespace Server
                         }
                         else
                         {
-                            servermsg = String.Format("{0}: {1}", username, output);
-                            Console.WriteLine(servermsg);
-                            server.BroadcastMessage(msg, Id);
-                        }
+                            if (output == "attachment")
+                            {
+                                GetFileDetails();
+                                servermsg = String.Format("{0}: {1}, {2}, {3}", username, output, "ok", fileDet.FILETYPE);
+                                output = "";
+                                Console.WriteLine(servermsg);
+                                GetFile();
+                                Console.WriteLine("Получен файл типа " + fileDet.FILETYPE + " имеющий размер " + fileDet.FILESIZE + " байт");
+                                SendFile();
+                            }
+                            else
+                            {
+                                servermsg = String.Format("{0}: {1}", username, output);
+                                Console.WriteLine(servermsg);
+                                server.BroadcastMessage(msg, Id);
+                            }
+                        }    
                     }
                     catch (Exception ex)
                     {
