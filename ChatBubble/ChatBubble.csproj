@@ -49,6 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ext.cs" />
     <Compile Include="GetBubble.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -69,6 +70,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SendFile.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SendFile.Designer.cs">
+      <DependentUpon>SendFile.cs</DependentUpon>
     </Compile>
     <Compile Include="SendImage.cs">
       <SubType>UserControl</SubType>
@@ -94,6 +101,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SendFile.resx">
+      <DependentUpon>SendFile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SendImage.resx">
       <DependentUpon>SendImage.cs</DependentUpon>
