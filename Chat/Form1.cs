@@ -12,6 +12,10 @@ using System.Threading;
 using System.Xml.Serialization;
 using System.Xml;
 using Newtonsoft.Json;
+using NAudio.Wave;
+using NAudio.FileFormats;
+using NAudio.CoreAudioApi;
+using NAudio;
 namespace Chat
 {
     public partial class Form1 : Form
@@ -28,6 +32,7 @@ namespace Chat
         List<GetBubble> receivelist = new List<GetBubble>();
         List<SendImage> photolist = new List<SendImage>();
         List<SendFile> filelist = new List<SendFile>();
+        List<SendAudio> audiolist = new List<SendAudio>();
         Random rnd = new Random();
         BinaryReader reader;
         BinaryWriter writer;
@@ -38,9 +43,10 @@ namespace Chat
         protected static NetworkStream stream;
         private FileDetails fileDet = new FileDetails();
         private static string gettedMessage = "";
-        private string path = "",filepath = "";
+        private string path = "",filepath = "",audiopath = "";
         private static SendImage image;
         private static SendFile file;
+        private static SendAudio audio;
         public Form1()
         {
             InitializeComponent();
@@ -91,6 +97,12 @@ namespace Chat
                     else
                     if (file.Left != 270) file.Left = 270;
                 }
+                foreach(SendAudio aud in audiolist)
+                {
+                    if (aud.Left == 5) continue;
+                    else
+                    if (aud.Left != 270) aud.Left = 270;
+                }
                 return true;
             }
             return false;
@@ -113,7 +125,7 @@ namespace Chat
         }
         private int getPosition()
         {
-            if (msglist.Count == 0 && receivelist.Count == 0 && photolist.Count == 0 && filelist.Count == 0) return 30;
+            if (msglist.Count == 0 && receivelist.Count == 0 && photolist.Count == 0 && filelist.Count == 0 && audiolist.Count == 0) return 30;
             if (lastObject is MyBubble)
             {
                 MyBubble tmp = (MyBubble)lastObject;
@@ -132,6 +144,11 @@ namespace Chat
             if (lastObject is SendFile)
             {
                 SendFile tmp = (SendFile)lastObject;
+                return tmp.Top + tmp.Height;
+            }
+            if (lastObject is SendAudio)
+            {
+                SendAudio tmp = (SendAudio)lastObject;
                 return tmp.Top + tmp.Height;
             }
             else return 0;
@@ -276,6 +293,25 @@ namespace Chat
                 filepath = "";
                 CheckScrollBar();
             }
+            if (audiopath != "")
+            {
+                audio = new SendAudio();
+                audio.SetFile(audiopath);
+                audio.AudioTime = (GetWavFileDuration(audiopath)).ToString();
+                audio.Left = 5;
+                audio.Top = getPosition();
+                audio.AddTimeLabelGetter();
+                panel3.Controls.Add(audio);
+                lastObject = audio;
+                audiolist.Add(audio);
+                audiopath = "";
+                CheckScrollBar();
+            }
+        }
+        public static TimeSpan GetWavFileDuration(string fileName)
+        {
+            WaveFileReader wf = new WaveFileReader(fileName);
+            return new TimeSpan(wf.TotalTime.Hours,wf.TotalTime.Minutes,wf.TotalTime.Seconds);
         }
         private string fileSizeString = null;
         public void ReceiveMessage()
@@ -283,7 +319,6 @@ namespace Chat
             while (true)
             {
                 string messageType = reader.ReadString();
-
                 if (messageType.Contains("image"))
                 {
                     string fileName = reader.ReadString();
@@ -307,12 +342,25 @@ namespace Chat
                         {
                             fs.Write(imageData, 0, imageData.Length);
                         }
-                        filepath = fileName;
-                        
+                        filepath = fileName; 
                     }
                     else
                     {
-                        gettedMessage = messageType;
+                        if (messageType.Contains("audio"))
+                        {
+                            string fileName = reader.ReadString();
+                            int fileSize = reader.ReadInt32(); // 2 GB max
+                            byte[] imageData = reader.ReadBytes(fileSize);
+                            using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
+                            {
+                                fs.Write(imageData, 0, imageData.Length);
+                            }
+                            audiopath = fileName;
+                        }
+                        else
+                        {
+                            gettedMessage = messageType;
+                        }
                     }
                 }
             }   
@@ -335,13 +383,91 @@ namespace Chat
             lastObject = image;
             photolist.Add(image);
         }
-
-        private void pictureBox2_Click(object sender, EventArgs e)
+        private int isRecord = 1;
+        private WaveIn waveIn;
+        private WaveFileWriter wavewriter;
+        void waveIn_DataAvailable(object sender, WaveInEventArgs e)
         {
-            if (pictureBox2.Image == Properties.Resources.startrecord)
-                pictureBox2.Image = Properties.Resources.record;
-            if (pictureBox2.Image == Properties.Resources.record)
-                pictureBox2.Image = Properties.Resources.startrecord;
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new EventHandler<WaveInEventArgs>(waveIn_DataAvailable), sender, e);
+            }
+            else
+            {
+                wavewriter.Write(e.Buffer, 0, e.BytesRecorded);
+                wavewriter.Flush();
+            }
+        }
+        static string audiofilename;
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {  
+            switch (isRecord)
+            {
+                case 1:
+                    {
+                        audiofilename = $"audio{rnd.Next(1000, 9999)}.wav";
+                        pictureBox2.SizeMode = PictureBoxSizeMode.CenterImage;
+                        pictureBox2.Image = Properties.Resources.record;
+                        isRecord = 0;
+                        waveIn = new WaveIn();
+                        waveIn.DeviceNumber = 0;
+                        waveIn.DataAvailable += waveIn_DataAvailable;
+                        waveIn.WaveFormat = new WaveFormat(8000, 1);
+                        wavewriter = new WaveFileWriter(audiofilename, waveIn.WaveFormat);
+                        waveIn.StartRecording(); 
+                        break;
+                    }
+                case 0:
+                    {
+                        if (waveIn != null)
+                        {
+                            waveIn.StopRecording();
+                            waveIn.Dispose();
+                            waveIn = null;
+                        }
+                        if (wavewriter != null)
+                        {
+                            wavewriter.Dispose();
+                            wavewriter = null;
+                        }
+                        pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+                        pictureBox2.Image = Properties.Resources.startrecord;
+                        isRecord = 1;
+                        SendAudioMessage();
+                        break;
+                    }
+            }
+        }
+        private void SendAudioMessage()
+        {
+            if (File.Exists(audiofilename) && isRecord == 1)
+            {
+                //Sending to server
+                byte[] bytes = Encoding.UTF8.GetBytes("audiofile");
+                stream.Write(bytes, 0, bytes.Length);
+                SendAudio audio = new SendAudio();
+                audio.SetFile(audiofilename);
+                audio.AudioTime = GetWavFileDuration(audiofilename).ToString();
+                using (FileStream fstream = new FileStream(audiofilename, FileMode.Open, FileAccess.Read))
+                {
+                    SendFileInfo(fstream);
+                    SendFile(fstream);
+                }
+                //Ending send file
+                //Locate control on GUI
+                audio.Left = this.Width - 158;
+                CheckScrollBar();
+                audio.Top = getPosition();
+                audio.AddTimeLabelSender();
+                panel3.Controls.Add(audio);
+                lastObject = audio;
+                audiolist.Add(audio);
+                //Ending add control
+            }
+        }
+        private void WaveIn_RecordingStopped(object sender, StoppedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)

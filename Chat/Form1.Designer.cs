@@ -100,7 +100,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.BackColor = System.Drawing.Color.White;
+            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
             this.pictureBox2.Location = new System.Drawing.Point(438, 5);
@@ -113,7 +113,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.White;
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(398, 5);
@@ -126,7 +126,7 @@
             // 
             // altoButton3
             // 
-            this.altoButton3.BackColor = System.Drawing.Color.White;
+            this.altoButton3.BackColor = System.Drawing.Color.Transparent;
             this.altoButton3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.altoButton3.Image = ((System.Drawing.Image)(resources.GetObject("altoButton3.Image")));
             this.altoButton3.Location = new System.Drawing.Point(358, 5);
