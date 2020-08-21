@@ -71,6 +71,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SendAudio.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SendAudio.Designer.cs">
+      <DependentUpon>SendAudio.cs</DependentUpon>
+    </Compile>
     <Compile Include="SendFile.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -101,6 +107,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SendAudio.resx">
+      <DependentUpon>SendAudio.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SendFile.resx">
       <DependentUpon>SendFile.cs</DependentUpon>
