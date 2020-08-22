@@ -7,6 +7,7 @@ Zwykly chat uzywany do komunikacji pomiedzy dwoma klientami
 - Wysyłka wiadomości głosowych
 - Wysyłka obrazków (.png, .bmp, .jpeg itd.)
 - Wysyłka plików (.pdf, .docx, .tex, .mp3, .mp4, itd.)
+#
 ![Screenshot_1](https://user-images.githubusercontent.com/19534189/90953705-354d1100-e46e-11ea-95bc-a228f98273a4.png)
 # Server
 Zwykly serwer ktory pozwala podlaczyc 2 klientow i sluzy do przeslania obrazkow oraz mailow od jednego klienta innemu. Pliki przesylane za pomoca protokolu TCP, wiec zadna czesc
