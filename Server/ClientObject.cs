@@ -140,31 +140,31 @@ namespace Server
                     try
                     {
                         string output = new string(msg.Where(c => char.IsLetter(c) || char.IsDigit(c) || char.IsSymbol(c) || char.IsSeparator(c) || char.IsPunctuation(c)).ToArray());
-                        if (output == "photo")
+                        switch (output)
                         {
-                            GetFileDetails();
-                            servermsg = String.Format("{0}: {1}, {2}, {3}", username, output, "ok", fileDet.FILETYPE);
-                            output = "";
-                            Console.WriteLine(servermsg);
-                            GetImage();
-                            Console.WriteLine("Получен файл типа " + fileDet.FILETYPE + " имеющий размер " + fileDet.FILESIZE + " байт");
-                            SendPhoto();
-                        }
-                        else
-                        {
-                            if (output == "attachment")
-                            {
-                                GetFileDetails();
-                                servermsg = String.Format("{0}: {1}, {2}, {3}", username, output, "ok", fileDet.FILETYPE);
-                                output = "";
-                                Console.WriteLine(servermsg);
-                                GetFile();
-                                Console.WriteLine("Получен файл типа " + fileDet.FILETYPE + " имеющий размер " + fileDet.FILESIZE + " байт");
-                                SendFile();
-                            }
-                            else
-                            {
-                                if (output == "audiofile")
+                            case "photo":
+                                {
+                                    GetFileDetails();
+                                    servermsg = String.Format("{0}: {1}, {2}, {3}", username, output, "ok", fileDet.FILETYPE);
+                                    output = "";
+                                    Console.WriteLine(servermsg);
+                                    GetImage();
+                                    Console.WriteLine("Получен файл типа " + fileDet.FILETYPE + " имеющий размер " + fileDet.FILESIZE + " байт");
+                                    SendPhoto();
+                                    break;
+                                }
+                            case "attachment":
+                                {
+                                    GetFileDetails();
+                                    servermsg = String.Format("{0}: {1}, {2}, {3}", username, output, "ok", fileDet.FILETYPE);
+                                    output = "";
+                                    Console.WriteLine(servermsg);
+                                    GetFile();
+                                    Console.WriteLine("Получен файл типа " + fileDet.FILETYPE + " имеющий размер " + fileDet.FILESIZE + " байт");
+                                    SendFile();
+                                    break;
+                                }
+                            case "audiofile":
                                 {
                                     GetFileDetails();
                                     servermsg = String.Format("{0}: {1}, {2}, {3}", username, output, "ok", fileDet.FILETYPE);
@@ -173,15 +173,22 @@ namespace Server
                                     GetAudio();
                                     Console.WriteLine("Получен файл типа " + fileDet.FILETYPE + " имеющий размер " + fileDet.FILESIZE + " байт");
                                     SendAudio();
+                                    break;
                                 }
-                                else
+                            case "expectedexit":
+                                {
+                                    server.RemoveConnection(Id);
+                                    Close();
+                                    break;
+                                }
+                            default:
                                 {
                                     servermsg = String.Format("{0}: {1}", username, output);
                                     Console.WriteLine(servermsg);
                                     server.BroadcastMessage(msg, Id);
+                                    break;
                                 }
-                            }
-                        }    
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -189,17 +196,10 @@ namespace Server
                         Console.WriteLine(servermsg);
                         break;
                     }
-                } 
+                }
             }
             catch (Exception ex)
-            {
-                Console.WriteLine($"Global Error! {ex.Message}");
-            }
-            finally
-            {
-                server.RemoveConnection(Id);
-                Close();
-            }
+            { }
         }
         public string GetMessage()
         {

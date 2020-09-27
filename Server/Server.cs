@@ -42,7 +42,7 @@ namespace Server
                 if (x.Id != id)
                 {
                     BinaryWriter writer = new BinaryWriter(x.stream);
-                    writer.Write(fs); //send that it is image
+                    writer.Write("photo"); //send that it is image
                     writer.Write(fs); //send filename
                     writer.Write(Convert.ToInt32(fd.FILESIZE)); //send filesize
                     byte[] bites = new byte[fstream.Length];
@@ -60,7 +60,7 @@ namespace Server
                 {
                     string tmp = fs.Insert(0, "my");
                     BinaryWriter writer = new BinaryWriter(x.stream);
-                    writer.Write(fs); //send that it is image
+                    writer.Write("attachment"); //send that it is image
                     writer.Write(tmp); //send filename
                     writer.Write(Convert.ToInt32(fd.FILESIZE)); //send filesize
                     byte[] bites = new byte[fstream.Length];
@@ -79,7 +79,7 @@ namespace Server
                     Console.WriteLine("Starting send FILE in server.cs");
                     string tmp = fs.Insert(0, "new");
                     BinaryWriter writer = new BinaryWriter(x.stream);
-                    writer.Write(fs); //send that it is audio
+                    writer.Write("audio"); //send that it is audio
                     writer.Write(tmp); //send audioname
                     writer.Write(Convert.ToInt32(fd.FILESIZE)); //send filesize
                     byte[] bites = new byte[fstream.Length];

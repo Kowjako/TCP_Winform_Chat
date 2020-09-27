@@ -101,7 +101,7 @@ namespace Chat
                 {
                     if (aud.Left == 5) continue;
                     else
-                    if (aud.Left != 270) aud.Left = 270;
+                    if (aud.Left != this.Width - 168) aud.Left = this.Width - 168;
                 }
                 return true;
             }
@@ -205,7 +205,6 @@ namespace Chat
                 stream.Write(data, 0, data.Length);
                 altoTextBox1.ForeColor = Color.DimGray;
                 altoTextBox1.Text = "Write message";
-
             }
             panel3.VerticalScroll.Value = panel3.VerticalScroll.Maximum;
             panel3.PerformLayout();
@@ -213,6 +212,8 @@ namespace Chat
 
         private void zeroitClassicRndButton1_Click(object sender, EventArgs e)
         {
+            byte[] data = Encoding.UTF8.GetBytes("expectedexit");
+            stream.Write(data, 0, data.Length);
             if (stream != null)  stream.Close();
             if (client != null) client.Close();
             this.Close();
@@ -314,56 +315,49 @@ namespace Chat
             return new TimeSpan(wf.TotalTime.Hours,wf.TotalTime.Minutes,wf.TotalTime.Seconds);
         }
         private string fileSizeString = null;
+        public string[] SaveFileOnPC()
+        {
+            string fileName = reader.ReadString();
+            int fileSize = reader.ReadInt32(); // 2 GB max
+            byte[] imageData = reader.ReadBytes(fileSize);
+            using (FileStream fs = new FileStream(fileName, FileMode.Create))
+            {
+                fs.Write(imageData, 0, imageData.Length);
+            }
+            return new string[] { fileName, Convert.ToString(fileSize) };
+        }
         public void ReceiveMessage()
         {
             while (true)
             {
                 string messageType = reader.ReadString();
-                if (messageType.Contains("image"))
+
+                switch (messageType)
                 {
-                    string fileName = reader.ReadString();
-                    int fileSize = reader.ReadInt32(); // 2 GB max
-                    byte[] imageData = reader.ReadBytes(fileSize);
-                    using (FileStream fs = new FileStream(fileName, FileMode.Create))
-                    {
-                        fs.Write(imageData, 0, imageData.Length);
-                    }
-                    path = fileName;
-                }
-                else
-                {
-                    if (messageType.Contains("file"))
-                    {
-                        string fileName = reader.ReadString();
-                        int fileSize = reader.ReadInt32(); // 2 GB max
-                        fileSizeString = Convert.ToString(fileSize);
-                        byte[] imageData = reader.ReadBytes(fileSize);
-                        using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
+                    case "photo":
                         {
-                            fs.Write(imageData, 0, imageData.Length);
+                            path = SaveFileOnPC()[0];
+                            break;
                         }
-                        filepath = fileName; 
-                    }
-                    else
-                    {
-                        if (messageType.Contains("audio"))
+                    case "attachment":
                         {
-                            string fileName = reader.ReadString();
-                            int fileSize = reader.ReadInt32(); // 2 GB max
-                            byte[] imageData = reader.ReadBytes(fileSize);
-                            using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
-                            {
-                                fs.Write(imageData, 0, imageData.Length);
-                            }
-                            audiopath = fileName;
+                            string[] data = SaveFileOnPC();
+                            fileSizeString = data[1];
+                            filepath = data[0];
+                            break;
                         }
-                        else
+                    case "audio":
+                        {
+                            audiopath = SaveFileOnPC()[0];
+                            break;
+                        }
+                    default:
                         {
                             gettedMessage = messageType;
+                            break;
                         }
-                    }
                 }
-            }   
+            }  
         }
 
         private void altoButton3_Click_1(object sender, EventArgs e)
