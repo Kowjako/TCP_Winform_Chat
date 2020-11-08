@@ -9,13 +9,13 @@ using ChatBubble;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading;
-using System.Xml.Serialization;
-using System.Xml;
+using AForge.Video;
+using AForge;
+using AForge.Video.DirectShow;
+using Accord.Video.FFMPEG;
 using Newtonsoft.Json;
 using NAudio.Wave;
-using NAudio.FileFormats;
-using NAudio.CoreAudioApi;
-using NAudio;
+
 namespace Chat
 {
     public partial class Form1 : Form
@@ -26,6 +26,15 @@ namespace Chat
             public string FILETYPE = "";
             public string FILESIZE = "";
         }
+
+        /*Variables*/
+        #region
+        private FilterInfoCollection VideoCaptureDevices;
+        private VideoFileWriter FileWriter = new VideoFileWriter();
+        private VideoCaptureDevice FinalVideo = null;
+        private Bitmap video;
+        private VideoCaptureDeviceForm captureDevice;
+
         static object locker = new object();
         static ReaderWriterLockSlim rwls = new ReaderWriterLockSlim();
         List<MyBubble> msglist = new List<MyBubble>();
@@ -36,7 +45,7 @@ namespace Chat
         Random rnd = new Random();
         BinaryReader reader;
         BinaryWriter writer;
-        private Point lastpoint;
+        private System.Drawing.Point lastpoint;
         private static int port = 8888;
         private static string ip = "127.0.0.1";
         private static TcpClient client;
@@ -47,6 +56,7 @@ namespace Chat
         private static SendImage image;
         private static SendFile file;
         private static SendAudio audio;
+        #endregion
         public Form1()
         {
             InitializeComponent();
@@ -61,6 +71,10 @@ namespace Chat
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+            VideoCaptureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            captureDevice = new VideoCaptureDeviceForm();
+
             nameLbl.Text = $"User{rnd.Next(100)}";
             panel3.HorizontalScroll.Maximum = 0;
             panel3.AutoScroll = false;
@@ -185,7 +199,7 @@ namespace Chat
         }
         private void panel2_MouseDown(object sender, MouseEventArgs e)
         {
-            lastpoint = new Point(e.X, e.Y);
+            lastpoint = new System.Drawing.Point(e.X, e.Y);
         }
         private void panel2_MouseMove(object sender, MouseEventArgs e)
         {
@@ -331,7 +345,6 @@ namespace Chat
             while (true)
             {
                 string messageType = reader.ReadString();
-
                 switch (messageType)
                 {
                     case "photo":
@@ -462,6 +475,56 @@ namespace Chat
         private void WaveIn_RecordingStopped(object sender, StoppedEventArgs e)
         {
             throw new NotImplementedException();
+        }
+        private string isRecording = "false";
+        RoundedImage videoPanel = new RoundedImage();
+        private void btnRecord_Click(object sender, EventArgs e)
+        {
+            switch(isRecording)
+            {
+                case "false":
+                    {
+                        isRecording = "true";
+                        if (captureDevice.ShowDialog(this) == DialogResult.OK)
+                        {
+                            videoPanel.Size = new Size(160, 160);
+                            videoPanel.Left = panel3.Width / 2-80;
+                            videoPanel.Top = panel3.Height / 2-80;
+                            videoPanel.SizeMode = PictureBoxSizeMode.StretchImage;
+                            panel3.Controls.Add(videoPanel);
+                            int h = captureDevice.VideoDevice.VideoResolution.FrameSize.Height;
+                            int w = captureDevice.VideoDevice.VideoResolution.FrameSize.Width;
+                            FileWriter.Open("hello.avi", w, h, 25, VideoCodec.Default, 5000000);
+                            FinalVideo = captureDevice.VideoDevice;
+                            FinalVideo.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
+                            FinalVideo.Start();
+                        }
+                        break;
+                    }
+                case "true":
+                    {
+                        isRecording = "false";
+                        FinalVideo.Stop();
+                        FileWriter.Close();
+                        panel3.Controls.Remove(videoPanel);
+                        break;
+                    }
+            }         
+        }
+
+        private void VideoSource_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        {
+            if (isRecording=="true")
+            {
+                video = (Bitmap)eventArgs.Frame.Clone();
+                videoPanel.Image = (Bitmap)eventArgs.Frame.Clone();
+                FileWriter.WriteVideoFrame(video);
+            }
+            else
+            {
+                video = (Bitmap)eventArgs.Frame.Clone();
+                videoPanel.Image = (Bitmap)eventArgs.Frame.Clone();
+            }
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
