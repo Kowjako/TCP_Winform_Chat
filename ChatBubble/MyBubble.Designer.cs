@@ -55,7 +55,7 @@
             this.MinimumSize = new System.Drawing.Size(0, 41);
             this.Name = "MyBubble";
             this.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
-            this.Size = new System.Drawing.Size(246, 136);
+            this.Size = new System.Drawing.Size(266, 155);
             this.Load += new System.EventHandler(this.MyBubble_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

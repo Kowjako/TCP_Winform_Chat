@@ -15,6 +15,7 @@ namespace ChatBubble
         public MyBubble()
         { 
             InitializeComponent();
+            SetStyle(ControlStyles.Opaque, true);
         }
         private int previousWidth;
         public string Body
@@ -64,9 +65,10 @@ namespace ChatBubble
                 label1.BackColor = value;
             }
         }
-        Label time = new Label();
+        TransparentLabel time = new TransparentLabel();
         public void AddTimeLabel()
         {
+            time.BackColor = System.Drawing.Color.Transparent;
             time.Left = label1.Left + label1.Width - 35;
             time.Top = label1.Height + 5;
             time.Text = DateTime.Now.ToShortTimeString();
@@ -78,6 +80,41 @@ namespace ChatBubble
         {
             label1.Left = this.Width - label1.Width - 5;
             AddTimeLabel();
+        }
+
+        private const int WS_EX_TRANSPARENT = 0x20;
+
+        private int opacity = 0;
+        [DefaultValue(50)]
+        public int Opacity
+        {
+            get
+            {
+                return this.opacity;
+            }
+            set
+            {
+                if (value < 0 || value > 100)
+                    throw new ArgumentException("value must be between 0 and 100");
+                this.opacity = value;
+            }
+        }
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle = cp.ExStyle | WS_EX_TRANSPARENT;
+                return cp;
+            }
+        }
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            using (var brush = new SolidBrush(Color.FromArgb(this.opacity * 255 / 100, this.BackColor)))
+            {
+                e.Graphics.FillRectangle(brush, this.ClientRectangle);
+            }
+            base.OnPaint(e);
         }
     }
 }
