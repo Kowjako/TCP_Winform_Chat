@@ -66,6 +66,7 @@ namespace ChatBubble
         TransparentLabel time = new TransparentLabel();
         public void AddTimeLabel()
         {
+            time.BackColor = System.Drawing.Color.Transparent;
             time.Left = label1.Left;
             time.Top = label1.Height + 5;
             time.Text = DateTime.Now.ToShortTimeString();

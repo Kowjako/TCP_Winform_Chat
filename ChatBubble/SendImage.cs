@@ -46,6 +46,7 @@ namespace ChatBubble
         public void AddTimeLabelSender()
         {
             panel1.BackColor = Color.White;
+            time.BackColor = System.Drawing.Color.Transparent;
             time.Left = panel1.Width - 35;
             time.Top = panel1.Height + 5;
             time.Text = DateTime.Now.ToShortTimeString();
@@ -56,6 +57,7 @@ namespace ChatBubble
         public void AddTimeLabelGetter()
         {
             panel1.BackColor = Color.SkyBlue;
+            time.BackColor = System.Drawing.Color.Transparent;
             time.Left = 5;
             time.Top = panel1.Height + 5;
             time.Text = DateTime.Now.ToShortTimeString();
