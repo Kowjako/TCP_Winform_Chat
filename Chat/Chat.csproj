@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AltoControls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\AltoControls.1.0.1\lib\AltoControls.dll</HintPath>
+      <HintPath>..\packages\AltoControls.1.0.1\lib\AltoControls.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ChatBubble, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -70,8 +70,9 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-    <Reference Include="Zeroit.Framework.Button">
-      <HintPath>..\..\LoginRegistration\packages\Zeroit.Framework.Button.1.0.0\lib\Zeroit.Framework.Button.dll</HintPath>
+    <Reference Include="Zeroit.Framework.Button, Version=1.0.7032.31637, Culture=neutral, PublicKeyToken=a0cee1bfa120b953, processorArchitecture=MSIL">
+      <HintPath>..\packages\Zeroit.Framework.Button.1.0.0\lib\Zeroit.Framework.Button.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
