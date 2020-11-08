@@ -15,6 +15,7 @@ namespace ChatBubble
         public GetBubble()
         {
             InitializeComponent();
+            SetStyle(ControlStyles.Opaque, true);
         }
         public string Body
         {
@@ -62,7 +63,7 @@ namespace ChatBubble
                 label1.BackColor = value;
             }
         }
-        Label time = new Label();
+        TransparentLabel time = new TransparentLabel();
         public void AddTimeLabel()
         {
             time.Left = label1.Left;
@@ -71,6 +72,40 @@ namespace ChatBubble
             time.Font = new Font("Segoe UI", 9);
             time.ForeColor = Color.DarkRed;
             this.Controls.Add(time);
+        }
+        private const int WS_EX_TRANSPARENT = 0x20;
+
+        private int opacity = 0;
+        [DefaultValue(50)]
+        public int Opacity
+        {
+            get
+            {
+                return this.opacity;
+            }
+            set
+            {
+                if (value < 0 || value > 100)
+                    throw new ArgumentException("value must be between 0 and 100");
+                this.opacity = value;
+            }
+        }
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle = cp.ExStyle | WS_EX_TRANSPARENT;
+                return cp;
+            }
+        }
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            using (var brush = new SolidBrush(Color.FromArgb(this.opacity * 255 / 100, this.BackColor)))
+            {
+                e.Graphics.FillRectangle(brush, this.ClientRectangle);
+            }
+            base.OnPaint(e);
         }
     }
 }
