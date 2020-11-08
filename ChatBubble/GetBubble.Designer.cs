@@ -53,7 +53,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
             this.Name = "GetBubble";
-            this.Size = new System.Drawing.Size(271, 78);
+            this.Size = new System.Drawing.Size(302, 121);
             this.ResumeLayout(false);
             this.PerformLayout();
 

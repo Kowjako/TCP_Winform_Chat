@@ -26,6 +26,7 @@ namespace ChatBubble
             set
             {
                 label1.Text = value;
+                AddTimeLabel();
             }
         }
         public Color MsgColor
