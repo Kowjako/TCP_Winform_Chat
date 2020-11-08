@@ -153,6 +153,7 @@
             // 
             // panel3
             // 
+            this.panel3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel3.BackgroundImage")));
             this.panel3.Location = new System.Drawing.Point(0, 59);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(538, 604);
@@ -160,7 +161,7 @@
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.panel2.BackColor = System.Drawing.Color.Black;
             this.panel2.Controls.Add(this.statusLbl);
             this.panel2.Controls.Add(this.nameLbl);
             this.panel2.Controls.Add(this.zeroitClassicRndButton1);
@@ -199,7 +200,8 @@
             // 
             this.zeroitClassicRndButton1.AllowClickAnimation = true;
             this.zeroitClassicRndButton1.AllowTransparency = true;
-            this.zeroitClassicRndButton1.ButtonColor = System.Drawing.Color.DarkSlateGray;
+            this.zeroitClassicRndButton1.BackColor = System.Drawing.Color.Gray;
+            this.zeroitClassicRndButton1.ButtonColor = System.Drawing.Color.Gray;
             this.zeroitClassicRndButton1.ButtonPressOffset = 0;
             this.zeroitClassicRndButton1.CenterColor = System.Drawing.Color.White;
             this.zeroitClassicRndButton1.ClickMaxOffset = 10;
@@ -213,6 +215,7 @@
             this.zeroitClassicRndButton1.Size = new System.Drawing.Size(42, 40);
             this.zeroitClassicRndButton1.TabIndex = 0;
             this.zeroitClassicRndButton1.Text = "X";
+            this.zeroitClassicRndButton1.UseVisualStyleBackColor = false;
             this.zeroitClassicRndButton1.VsTextSpread = 0.75D;
             this.zeroitClassicRndButton1.Click += new System.EventHandler(this.zeroitClassicRndButton1_Click);
             // 
