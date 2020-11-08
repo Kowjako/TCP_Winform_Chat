@@ -11,6 +11,7 @@ namespace ChatBubble
     {
         public TransparentLabel()
         {
+            //comm
             this.SetStyle(ControlStyles.Opaque, true);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, false);
             this.TextChanged += TransparentLabel_TextChanged;
