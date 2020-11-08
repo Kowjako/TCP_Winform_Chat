@@ -251,8 +251,8 @@ namespace Chat
             msg.Top = getPosition();
             msg.Height = 10;
             msg.Body = output;
-            msg.AddTimeLabel();
             msg.AutoSize = true;
+            msg.AddTimeLabel();
             panel3.Controls.Add(msg);
             receivelist.Add(msg);
             lastObject = msg;
