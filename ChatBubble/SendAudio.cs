@@ -25,7 +25,6 @@ namespace ChatBubble
             label1.BackColor = Color.White;
             label2.BackColor = Color.White;
             pictureBox1.BackColor = Color.White;
-            time.BackColor = System.Drawing.Color.Transparent;
             time.Left = panel1.Width - 35;
             time.Top = panel1.Height + 5;
             time.Text = DateTime.Now.ToShortTimeString();
@@ -39,7 +38,6 @@ namespace ChatBubble
             label1.BackColor = Color.SkyBlue;
             label2.BackColor = Color.SkyBlue;
             pictureBox1.BackColor = Color.SkyBlue;
-            time.BackColor = System.Drawing.Color.Transparent;
             time.Left = 5;
             time.Top = panel1.Height + 5;
             time.Text = DateTime.Now.ToShortTimeString();
