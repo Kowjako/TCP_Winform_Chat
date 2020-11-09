@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.btnRecord = new System.Windows.Forms.PictureBox();
             this.altoButton1 = new AltoControls.AltoButton();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -45,6 +46,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnRecord)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.altoButton3)).BeginInit();
@@ -66,6 +68,7 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.White;
+            this.panel4.Controls.Add(this.btnRecord);
             this.panel4.Controls.Add(this.altoButton1);
             this.panel4.Controls.Add(this.pictureBox2);
             this.panel4.Controls.Add(this.pictureBox1);
@@ -76,6 +79,19 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(538, 38);
             this.panel4.TabIndex = 0;
+            // 
+            // btnRecord
+            // 
+            this.btnRecord.BackColor = System.Drawing.Color.Transparent;
+            this.btnRecord.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnRecord.Image")));
+            this.btnRecord.Location = new System.Drawing.Point(329, 5);
+            this.btnRecord.Name = "btnRecord";
+            this.btnRecord.Size = new System.Drawing.Size(34, 31);
+            this.btnRecord.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnRecord.TabIndex = 5;
+            this.btnRecord.TabStop = false;
+            this.btnRecord.Click += new System.EventHandler(this.btnRecord_Click);
             // 
             // altoButton1
             // 
@@ -103,7 +119,7 @@
             this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(438, 5);
+            this.pictureBox2.Location = new System.Drawing.Point(449, 5);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(34, 31);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -116,7 +132,7 @@
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(398, 5);
+            this.pictureBox1.Location = new System.Drawing.Point(409, 5);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(34, 31);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -129,7 +145,7 @@
             this.altoButton3.BackColor = System.Drawing.Color.Transparent;
             this.altoButton3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.altoButton3.Image = ((System.Drawing.Image)(resources.GetObject("altoButton3.Image")));
-            this.altoButton3.Location = new System.Drawing.Point(358, 5);
+            this.altoButton3.Location = new System.Drawing.Point(369, 5);
             this.altoButton3.Name = "altoButton3";
             this.altoButton3.Size = new System.Drawing.Size(34, 31);
             this.altoButton3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -145,7 +161,7 @@
             this.altoTextBox1.ForeColor = System.Drawing.Color.DimGray;
             this.altoTextBox1.Location = new System.Drawing.Point(3, 3);
             this.altoTextBox1.Name = "altoTextBox1";
-            this.altoTextBox1.Size = new System.Drawing.Size(480, 35);
+            this.altoTextBox1.Size = new System.Drawing.Size(325, 35);
             this.altoTextBox1.TabIndex = 0;
             this.altoTextBox1.Text = "Write message";
             this.altoTextBox1.Enter += new System.EventHandler(this.altoTextBox1_Enter);
@@ -236,6 +252,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.btnRecord)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.altoButton3)).EndInit();
@@ -260,6 +277,7 @@
         private System.Windows.Forms.PictureBox altoButton3;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox btnRecord;
     }
 }
 
