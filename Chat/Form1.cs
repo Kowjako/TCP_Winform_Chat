@@ -376,9 +376,9 @@ namespace Chat
         private void altoButton3_Click_1(object sender, EventArgs e)
         {
             SendImage image = new SendImage();
-            FileStream fs = new FileStream(image.SetImage(), FileMode.Open, FileAccess.Read);
-            if (fs != null)
+            if (image.SetImage() != null)
             {
+                FileStream fs = new FileStream(image.SetImage(), FileMode.Open, FileAccess.Read);
                 byte[] bytes = Encoding.UTF8.GetBytes("photo");
                 stream.Write(bytes, 0, bytes.Length);
                 SendFileInfo(fs);
