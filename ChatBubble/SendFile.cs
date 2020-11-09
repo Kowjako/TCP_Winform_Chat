@@ -44,6 +44,7 @@ namespace ChatBubble
         TransparentLabel time = new TransparentLabel();
         public void AddTimeLabelSender()
         {
+            time.BackColor = System.Drawing.Color.Transparent;
             panel1.BackColor = Color.White;
             time.Left = panel1.Width - 35;
             time.Top = panel1.Height + 5;
@@ -82,6 +83,7 @@ namespace ChatBubble
         }
         public void AddTimeLabelGetter()
         {
+            time.BackColor = System.Drawing.Color.Transparent;
             panel1.BackColor = Color.SkyBlue;
             time.Left = 5;
             time.Top = panel1.Height + 5;
