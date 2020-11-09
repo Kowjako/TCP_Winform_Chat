@@ -375,20 +375,23 @@ namespace Chat
 
         private void altoButton3_Click_1(object sender, EventArgs e)
         {
-            byte[] bytes = Encoding.UTF8.GetBytes("photo");
-            stream.Write(bytes, 0, bytes.Length);
             SendImage image = new SendImage();
             FileStream fs = new FileStream(image.SetImage(), FileMode.Open, FileAccess.Read);
-            SendFileInfo(fs);
-            SendFile(fs);
-            fs.Close();
-            image.Left = 285;
-            CheckScrollBar();
-            image.Top = getPosition();
-            image.AddTimeLabelSender();
-            panel3.Controls.Add(image);
-            lastObject = image;
-            photolist.Add(image);
+            if (fs != null)
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes("photo");
+                stream.Write(bytes, 0, bytes.Length);
+                SendFileInfo(fs);
+                SendFile(fs);
+                fs.Close();
+                image.Left = 285;
+                CheckScrollBar();
+                image.Top = getPosition();
+                image.AddTimeLabelSender();
+                panel3.Controls.Add(image);
+                lastObject = image;
+                photolist.Add(image);
+            }
         }
         private int isRecord = 1;
         private WaveIn waveIn;
