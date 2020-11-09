@@ -17,7 +17,7 @@ namespace ChatBubble
         {
             OpenFileDialog fd = new OpenFileDialog();
             fd.Filter = "Photos | *.jpg; *.jpeg; *.png *.bmp";
-            fd.Title = "Choose a file";
+            fd.Title = "Choose a picture";
             if (fd.ShowDialog() == DialogResult.OK)
             {
                 FileStream file = (FileStream)fd.OpenFile();

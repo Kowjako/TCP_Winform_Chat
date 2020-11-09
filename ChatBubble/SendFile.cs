@@ -61,15 +61,21 @@ namespace ChatBubble
         public string OpenFileDialog()
         {
             OpenFileDialog fd = new OpenFileDialog();
+            fd.Filter = "Files | *.pdf; *.xlsx; *.doc; *.docx; *.ppt";
             fd.Title = "Choose a file";
-            fd.ShowDialog();
-            fs = (FileStream)fd.OpenFile();          
-            return fs.Name;
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                FileStream file = (FileStream)fd.OpenFile();
+                if (file != null)
+                    return file.Name;
+            }
+            return null;
         }
         public string SetFile()
         {
             string path = OpenFileDialog();
-            return path;
+            if (path != null) return path;
+            return null;
         }
         public void ResetStream()
         {
