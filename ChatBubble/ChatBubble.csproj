@@ -89,6 +89,12 @@
     <Compile Include="SendImage.Designer.cs">
       <DependentUpon>SendImage.cs</DependentUpon>
     </Compile>
+    <Compile Include="SendVideo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SendVideo.Designer.cs">
+      <DependentUpon>SendVideo.cs</DependentUpon>
+    </Compile>
     <Compile Include="TimeSelector.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -119,6 +125,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SendImage.resx">
       <DependentUpon>SendImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SendVideo.resx">
+      <DependentUpon>SendVideo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TimeSelector.resx">
       <DependentUpon>TimeSelector.cs</DependentUpon>
