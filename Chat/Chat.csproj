@@ -65,7 +65,7 @@
     </Reference>
     <Reference Include="ChatBubble, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ChatBubble\ChatBubble\bin\Debug\ChatBubble.dll</HintPath>
+      <HintPath>..\..\Library\ChatBubble\bin\Debug\ChatBubble.dll</HintPath>
     </Reference>
     <Reference Include="MaterialSkin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialSkin.0.2.1\lib\MaterialSkin.dll</HintPath>

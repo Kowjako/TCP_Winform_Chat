@@ -532,23 +532,27 @@ namespace Chat
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            byte[] bytes = Encoding.UTF8.GetBytes("attachment");
-            stream.Write(bytes, 0, bytes.Length);
             SendFile file = new SendFile();
-            FileStream fs = new FileStream(file.SetFile(), FileMode.Open, FileAccess.Read);
-            file.SetFile(fs.Name);
-            file.FileName = getNameOfFile(fs.Name);
-            file.FileSize = Convert.ToString(fs.Length);
-            SendFileInfo(fs);
-            SendFile(fs);
-            fs.Close();
-            file.Left = 285;
-            CheckScrollBar();
-            file.Top = getPosition();
-            file.AddTimeLabelSender();
-            panel3.Controls.Add(file);
-            lastObject = file;
-            filelist.Add(file);
+            string filename;
+            if ((filename = file.SetFile()) != null)
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes("attachment");
+                stream.Write(bytes, 0, bytes.Length);
+                FileStream fs = new FileStream(file.SetFile(), FileMode.Open, FileAccess.Read);
+                file.SetFile(fs.Name);
+                file.FileName = getNameOfFile(fs.Name);
+                file.FileSize = Convert.ToString(fs.Length);
+                SendFileInfo(fs);
+                SendFile(fs);
+                fs.Close();
+                file.Left = 285;
+                CheckScrollBar();
+                file.Top = getPosition();
+                file.AddTimeLabelSender();
+                panel3.Controls.Add(file);
+                lastObject = file;
+                filelist.Add(file);
+            }
         }
         private string getNameOfFile(string path)
         {
