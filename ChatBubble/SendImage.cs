@@ -18,10 +18,12 @@ namespace ChatBubble
             OpenFileDialog fd = new OpenFileDialog();
             fd.Filter = "Photos | *.jpg; *.jpeg; *.png *.bmp";
             fd.Title = "Choose a file";
-            fd.ShowDialog();
-            FileStream file = (FileStream)fd.OpenFile();
-            if(file!=null)
-            return file.Name;
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                FileStream file = (FileStream)fd.OpenFile();
+                if (file != null)
+                    return file.Name;
+            }
             return null;
         }
         public void SetImage(string path)
@@ -42,6 +44,7 @@ namespace ChatBubble
         public string SetImage()
         {
             string path = OpenFileDialog();
+            if (path != null) 
             pictureBox1.Image = Image.FromFile(path);
             return path;
         }
