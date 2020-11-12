@@ -42,6 +42,7 @@ namespace Chat
         List<SendImage> photolist = new List<SendImage>();
         List<SendFile> filelist = new List<SendFile>();
         List<SendAudio> audiolist = new List<SendAudio>();
+        List<SendVideo> videolist = new List<SendVideo>();
         Random rnd = new Random();
         BinaryReader reader;
         BinaryWriter writer;
@@ -117,6 +118,12 @@ namespace Chat
                     else
                     if (aud.Left != this.Width - 168) aud.Left = this.Width - 168;
                 }
+                foreach (SendVideo vid in videolist)
+                {
+                    if (vid.Left == 5) continue;
+                    else
+                    if (vid.Left != this.Width - 168) vid.Left = this.Width - 168;
+                }
                 return true;
             }
             return false;
@@ -139,7 +146,7 @@ namespace Chat
         }
         private int getPosition()
         {
-            if (msglist.Count == 0 && receivelist.Count == 0 && photolist.Count == 0 && filelist.Count == 0 && audiolist.Count == 0) return 30;
+            if (msglist.Count == 0 && receivelist.Count == 0 && photolist.Count == 0 && filelist.Count == 0 && audiolist.Count == 0 && videolist.Count==0) return 30;
             if (lastObject is MyBubble)
             {
                 MyBubble tmp = (MyBubble)lastObject;
@@ -163,6 +170,11 @@ namespace Chat
             if (lastObject is SendAudio)
             {
                 SendAudio tmp = (SendAudio)lastObject;
+                return tmp.Top + tmp.Height;
+            }
+            if (lastObject is SendVideo)
+            {
+                SendVideo tmp = (SendVideo)lastObject;
                 return tmp.Top + tmp.Height;
             }
             else return 0;
@@ -481,6 +493,7 @@ namespace Chat
         }
         private string isRecording = "false";
         RoundedImage videoPanel = new RoundedImage();
+        static string videofilename;
         private void btnRecord_Click(object sender, EventArgs e)
         {
             switch(isRecording)
@@ -490,6 +503,7 @@ namespace Chat
                         isRecording = "true";
                         if (captureDevice.ShowDialog(this) == DialogResult.OK)
                         {
+                            videofilename = $"video{rnd.Next(1000, 9999)}.avi";
                             videoPanel.Size = new Size(160, 160);
                             videoPanel.Left = panel3.Width / 2-80;
                             videoPanel.Top = panel3.Height / 2-80;
@@ -497,7 +511,7 @@ namespace Chat
                             panel3.Controls.Add(videoPanel);
                             int h = captureDevice.VideoDevice.VideoResolution.FrameSize.Height;
                             int w = captureDevice.VideoDevice.VideoResolution.FrameSize.Width;
-                            FileWriter.Open("hello.avi", w, h, 25, VideoCodec.Default, 5000000);
+                            FileWriter.Open(videofilename, w, h, 25, VideoCodec.Default, 5000000);
                             FinalVideo = captureDevice.VideoDevice;
                             FinalVideo.NewFrame += new NewFrameEventHandler(VideoSource_NewFrame);
                             FinalVideo.Start();
@@ -510,11 +524,38 @@ namespace Chat
                         FinalVideo.Stop();
                         FileWriter.Close();
                         panel3.Controls.Remove(videoPanel);
+                        SendVideoMessage();
                         break;
                     }
             }         
         }
 
+        private void SendVideoMessage()
+        {
+            if (File.Exists(videofilename) && isRecording == "false")
+            {
+                //Sending to server
+                //byte[] bytes = Encoding.UTF8.GetBytes("videofile");
+                //stream.Write(bytes, 0, bytes.Length);
+                SendVideo video = new SendVideo();
+                video.SetFile(videofilename);
+                using (FileStream fstream = new FileStream(videofilename, FileMode.Open, FileAccess.Read))
+                {
+                    SendFileInfo(fstream);
+                    SendFile(fstream);
+                }
+                //Ending send file
+                //Locate control on GUI
+                video.Left = this.Width - 158;
+                CheckScrollBar();
+                video.Top = getPosition();
+                video.AddTimeLabelSender();
+                panel3.Controls.Add(video);
+                lastObject = video;
+                videolist.Add(video);
+                //Ending add control
+            }
+        }
         private void VideoSource_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             if (isRecording=="true")
