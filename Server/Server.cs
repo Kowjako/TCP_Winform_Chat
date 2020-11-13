@@ -60,12 +60,12 @@ namespace Server
                 {
                     string tmp = fs.Insert(0, "my");
                     BinaryWriter writer = new BinaryWriter(x.stream);
-                    writer.Write("attachment"); //send that it is image
+                    writer.Write("attachment"); //send that it is file
                     writer.Write(tmp); //send filename
                     writer.Write(Convert.ToInt32(fd.FILESIZE)); //send filesize
                     byte[] bites = new byte[fstream.Length];
                     int size = fstream.Read(bites, 0, bites.Length);
-                    writer.Write(bites); // send ImageData
+                    writer.Write(bites); // send FileData
                 }
             }
         }
@@ -84,7 +84,26 @@ namespace Server
                     writer.Write(Convert.ToInt32(fd.FILESIZE)); //send filesize
                     byte[] bites = new byte[fstream.Length];
                     int size = fstream.Read(bites, 0, bites.Length);
-                    writer.Write(bites); // send ImageData
+                    writer.Write(bites); // send AudioData
+                }
+            }
+        }
+        protected internal void SendVideo(FileDetails fd, string fs, string id)
+        {
+            FileStream fstream = File.Open(fs, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            foreach (ClientObject x in clients)
+            {
+                if (x.Id != id)
+                {
+                    Console.WriteLine("Starting send VIDEO in server.cs");
+                    string tmp = fs.Insert(0, "new");
+                    BinaryWriter writer = new BinaryWriter(x.stream);
+                    writer.Write("video"); //send that it is audio
+                    writer.Write(tmp); //send audioname
+                    writer.Write(Convert.ToInt32(fd.FILESIZE)); //send filesize
+                    byte[] bites = new byte[fstream.Length];
+                    int size = fstream.Read(bites, 0, bites.Length);
+                    writer.Write(bites); // send VideoData
                 }
             }
         }

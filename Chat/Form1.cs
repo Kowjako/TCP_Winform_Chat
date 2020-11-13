@@ -53,10 +53,11 @@ namespace Chat
         protected static NetworkStream stream;
         private FileDetails fileDet = new FileDetails();
         private static string gettedMessage = "";
-        private string path = "",filepath = "",audiopath = "";
+        private string path = "", filepath = "", audiopath = "", videopath = "";
         private static SendImage image;
         private static SendFile file;
         private static SendAudio audio;
+        private static SendVideo wideo;
         #endregion
         public Form1()
         {
@@ -334,6 +335,19 @@ namespace Chat
                 audiopath = "";
                 CheckScrollBar();
             }
+            if (videopath != "")
+            {
+                wideo = new SendVideo();
+                wideo.SetFile(videopath);
+                wideo.Left = 5;
+                wideo.Top = getPosition();
+                wideo.AddTimeLabelGetter();
+                panel3.Controls.Add(wideo);
+                lastObject = wideo;
+                videolist.Add(wideo);
+                videopath = "";
+                CheckScrollBar();
+            }
         }
         public static TimeSpan GetWavFileDuration(string fileName)
         {
@@ -374,6 +388,11 @@ namespace Chat
                     case "audio":
                         {
                             audiopath = SaveFileOnPC()[0];
+                            break;
+                        }
+                    case "video":
+                        {
+                            videopath = SaveFileOnPC()[0];
                             break;
                         }
                     default:
@@ -535,8 +554,8 @@ namespace Chat
             if (File.Exists(videofilename) && isRecording == "false")
             {
                 //Sending to server
-                //byte[] bytes = Encoding.UTF8.GetBytes("videofile");
-                //stream.Write(bytes, 0, bytes.Length);
+                byte[] bytes = Encoding.UTF8.GetBytes("videofile");
+                stream.Write(bytes, 0, bytes.Length);
                 SendVideo video = new SendVideo();
                 video.SetFile(videofilename);
                 using (FileStream fstream = new FileStream(videofilename, FileMode.Open, FileAccess.Read))

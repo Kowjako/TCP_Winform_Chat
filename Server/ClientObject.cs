@@ -111,6 +111,31 @@ namespace Server
                 Console.WriteLine(eR.ToString() + " GET AUDIO ERROR");
             }
         }
+        public void GetVideo()
+        {
+            mark = rnd.Next(1000, 9999);
+            FileStream fs = new FileStream($"video{mark}" + fileDet.FILETYPE, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+            Byte[] receiveBytes = new Byte[256];
+            try
+            {
+                do
+                {
+                    int bytes = stream.Read(receiveBytes, 0, receiveBytes.Length);
+                    fs.Write(receiveBytes, 0, bytes);
+                }
+                while (fs.Length != Convert.ToInt64(fileDet.FILESIZE));
+                fs.Close();
+            }
+            catch (Exception eR)
+            {
+                Console.WriteLine(eR.ToString() + " GET VIDEO ERROR");
+            }
+        }
+        private void SendVideo()
+        {
+            server.SendVideo(fileDet, $"video{mark}{fileDet.FILETYPE}", Id);
+            Console.WriteLine("video has sent");
+        }
         private void SendPhoto()
         {
             server.SendPhoto(fileDet, $"image{mark}{fileDet.FILETYPE}", Id);
@@ -173,6 +198,17 @@ namespace Server
                                     GetAudio();
                                     Console.WriteLine("Получен файл типа " + fileDet.FILETYPE + " имеющий размер " + fileDet.FILESIZE + " байт");
                                     SendAudio();
+                                    break;
+                                }
+                            case "videofile":
+                                {
+                                    GetFileDetails();
+                                    servermsg = String.Format("{0}: {1}, {2}, {3}", username, output, "ok", fileDet.FILETYPE);
+                                    output = "";
+                                    Console.WriteLine(servermsg);
+                                    GetVideo();
+                                    Console.WriteLine("Получен файл типа " + fileDet.FILETYPE + " имеющий размер " + fileDet.FILESIZE + " байт");
+                                    SendVideo();
                                     break;
                                 }
                             case "expectedexit":
