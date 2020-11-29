@@ -8,11 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using WMPLib;
 
 namespace ChatBubble
 {
     public partial class SendVideo : UserControl
     {
+        private string filename;
         public SendVideo()
         {
             InitializeComponent();
@@ -49,11 +51,6 @@ namespace ChatBubble
         {
             filename = path;
         }
-        private string filename;
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            Process.Start(filename);
-        }
         private const int WS_EX_TRANSPARENT = 0x20;
 
         private int opacity = 0;
@@ -87,6 +84,11 @@ namespace ChatBubble
                 e.Graphics.FillRectangle(brush, this.ClientRectangle);
             }
             base.OnPaint(e);
+        }
+
+        private void pictureBox1_Click_1(object sender, EventArgs e)
+        {
+            Process.Start(filename);
         }
     }
 }
