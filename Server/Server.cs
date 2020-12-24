@@ -34,76 +34,21 @@ namespace Server
                 }
             }
         }
-        protected internal void SendPhoto(FileDetails fd, string fs, string id)
+        protected internal void SendFile(FileDetails fd, string fs, string id, string type)
         {
             FileStream fstream = File.Open(fs, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
             foreach (ClientObject x in clients)
             {
                 if (x.Id != id)
                 {
+                    string tmp = fs.Insert(0, "new");
                     BinaryWriter writer = new BinaryWriter(x.stream);
-                    writer.Write("photo"); //send that it is image
-                    writer.Write(fs); //send filename
-                    writer.Write(Convert.ToInt32(fd.FILESIZE)); //send filesize
-                    byte[] bites = new byte[fstream.Length];
-                    int size = fstream.Read(bites, 0, bites.Length);
-                    writer.Write(bites); // send ImageData
-                }
-            }
-        }
-        protected internal void SendFile(FileDetails fd, string fs, string id)
-        {
-            FileStream fstream = File.Open(fs, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            foreach (ClientObject x in clients)
-            {
-                if (x.Id != id)
-                {
-                    string tmp = fs.Insert(0, "my");
-                    BinaryWriter writer = new BinaryWriter(x.stream);
-                    writer.Write("attachment"); //send that it is file
+                    writer.Write(type); //send that it is image
                     writer.Write(tmp); //send filename
                     writer.Write(Convert.ToInt32(fd.FILESIZE)); //send filesize
                     byte[] bites = new byte[fstream.Length];
                     int size = fstream.Read(bites, 0, bites.Length);
-                    writer.Write(bites); // send FileData
-                }
-            }
-        }
-        protected internal void SendAudio(FileDetails fd, string fs, string id)
-        {
-            FileStream fstream = File.Open(fs, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            foreach (ClientObject x in clients)
-            {
-                if (x.Id != id)
-                {
-                    Console.WriteLine("Starting send FILE in server.cs");
-                    string tmp = fs.Insert(0, "new");
-                    BinaryWriter writer = new BinaryWriter(x.stream);
-                    writer.Write("audio"); //send that it is audio
-                    writer.Write(tmp); //send audioname
-                    writer.Write(Convert.ToInt32(fd.FILESIZE)); //send filesize
-                    byte[] bites = new byte[fstream.Length];
-                    int size = fstream.Read(bites, 0, bites.Length);
-                    writer.Write(bites); // send AudioData
-                }
-            }
-        }
-        protected internal void SendVideo(FileDetails fd, string fs, string id)
-        {
-            FileStream fstream = File.Open(fs, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            foreach (ClientObject x in clients)
-            {
-                if (x.Id != id)
-                {
-                    Console.WriteLine("Starting send VIDEO in server.cs");
-                    string tmp = fs.Insert(0, "new");
-                    BinaryWriter writer = new BinaryWriter(x.stream);
-                    writer.Write("video"); //send that it is audio
-                    writer.Write(tmp); //send audioname
-                    writer.Write(Convert.ToInt32(fd.FILESIZE)); //send filesize
-                    byte[] bites = new byte[fstream.Length];
-                    int size = fstream.Read(bites, 0, bites.Length);
-                    writer.Write(bites); // send VideoData
+                    writer.Write(bites); // send ImageData
                 }
             }
         }

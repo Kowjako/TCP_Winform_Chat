@@ -373,12 +373,12 @@ namespace Chat
                 string messageType = reader.ReadString();
                 switch (messageType)
                 {
-                    case "photo":
+                    case "image":
                         {
                             path = SaveFileOnPC()[0];
                             break;
                         }
-                    case "attachment":
+                    case "file":
                         {
                             string[] data = SaveFileOnPC();
                             fileSizeString = data[1];
