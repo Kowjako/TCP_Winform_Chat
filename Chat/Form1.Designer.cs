@@ -159,13 +159,13 @@
             this.altoTextBox1.Br = System.Drawing.Color.White;
             this.altoTextBox1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.altoTextBox1.ForeColor = System.Drawing.Color.DimGray;
-            this.altoTextBox1.Location = new System.Drawing.Point(3, 3);
+            this.altoTextBox1.Location = new System.Drawing.Point(3, 0);
             this.altoTextBox1.Name = "altoTextBox1";
             this.altoTextBox1.Size = new System.Drawing.Size(325, 35);
             this.altoTextBox1.TabIndex = 0;
-            this.altoTextBox1.Text = "Write message";
+            this.altoTextBox1.TabStop = false;
+            this.altoTextBox1.TextChanged += new System.EventHandler(this.altoTextBox1_TextChanged);
             this.altoTextBox1.Enter += new System.EventHandler(this.altoTextBox1_Enter);
-            this.altoTextBox1.Leave += new System.EventHandler(this.altoTextBox1_Leave);
             // 
             // panel3
             // 

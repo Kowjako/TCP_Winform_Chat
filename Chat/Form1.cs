@@ -62,6 +62,7 @@ namespace Chat
         public Form1()
         {
             InitializeComponent();
+            altoTextBox1.Text = "Write message";
             client = new TcpClient();
             client.Connect(ip, port);
             Thread t = new Thread(new ThreadStart(ReceiveMessage));
@@ -230,8 +231,10 @@ namespace Chat
                 AddBubble();
                 byte[] data = Encoding.UTF8.GetBytes(msg);
                 stream.Write(data, 0, data.Length);
-                altoTextBox1.ForeColor = Color.DimGray;
+                isTyped = false;
                 altoTextBox1.Text = "Write message";
+                altoTextBox1.ForeColor = Color.DimGray;
+                isTyped = true;
             }
             panel3.VerticalScroll.Value = panel3.VerticalScroll.Maximum;
             panel3.PerformLayout();
@@ -244,14 +247,6 @@ namespace Chat
             if (stream != null)  stream.Close();
             if (client != null) client.Close();
             this.Close();
-        }
-        private void altoTextBox1_Enter(object sender, EventArgs e)
-        {
-            if (altoTextBox1.Text == "Write message")
-            {
-                altoTextBox1.ForeColor = Color.Black;
-                altoTextBox1.Text = "";
-            }
         }
         private object lastObject = 30;
         private void ReceiveBubble(string text)
@@ -269,14 +264,6 @@ namespace Chat
             panel3.Controls.Add(msg);
             receivelist.Add(msg);
             lastObject = msg;
-        }
-        private void altoTextBox1_Leave(object sender, EventArgs e)
-        {
-            if (altoTextBox1.Text == "")
-            {
-                altoTextBox1.ForeColor = Color.Gray;
-                altoTextBox1.Text = "Write message";
-            }
         }
         private void altoTextBox2_TextChanged(object sender, EventArgs e)
         {
@@ -575,6 +562,35 @@ namespace Chat
                 //Ending add control
             }
         }
+
+
+        bool isTyped = false;
+
+
+        private void altoTextBox1_Enter(object sender, EventArgs e)
+        {
+            if(altoTextBox1.Text=="Write message")
+            {
+                altoTextBox1.ForeColor = Color.Black;
+                altoTextBox1.Text = null;
+            }
+        }
+
+        private void altoTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (isTyped)
+            {
+                if (altoTextBox1.Text.Contains("Write message"))
+                {
+                    altoTextBox1.ForeColor = Color.Black;
+                    altoTextBox1.Text = altoTextBox1.Text.Replace("Write message", "").Trim();
+                    string firstSymbol = altoTextBox1.Text;
+                    altoTextBox1.Text = null;
+                    SendKeys.Send($"{firstSymbol}");
+                }
+            }
+        }
+
         private void VideoSource_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             if (isRecording=="true")
