@@ -20,6 +20,8 @@ namespace Server
             public string FILESIZE = "";
         }
         private static FileDetails fileDet = new FileDetails();
+        private string username;
+        private string servermsg = "";
         protected internal string Id { get; set; }
         protected internal NetworkStream stream { get; set; }
         static TcpClient client;
@@ -87,8 +89,7 @@ namespace Server
             Console.WriteLine("Получен файл типа " + fileDet.FILETYPE + " имеющий размер " + fileDet.FILESIZE + " байт");
             SendFile(type);
         }
-        string username;
-        string servermsg = "";
+        
         public void Process()
         {
             try

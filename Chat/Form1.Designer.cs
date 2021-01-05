@@ -44,6 +44,7 @@
             this.nameLbl = new System.Windows.Forms.Label();
             this.zeroitClassicRndButton1 = new Zeroit.Framework.Button.ZeroitClassicRndButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.roundedImage1 = new Chat.RoundedImage();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnRecord)).BeginInit();
@@ -51,6 +52,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.altoButton3)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.roundedImage1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -67,7 +69,8 @@
             // 
             // panel4
             // 
-            this.panel4.BackColor = System.Drawing.Color.White;
+            this.panel4.BackColor = System.Drawing.SystemColors.Control;
+            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel4.Controls.Add(this.btnRecord);
             this.panel4.Controls.Add(this.altoButton1);
             this.panel4.Controls.Add(this.pictureBox2);
@@ -85,7 +88,7 @@
             this.btnRecord.BackColor = System.Drawing.Color.Transparent;
             this.btnRecord.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRecord.Image = ((System.Drawing.Image)(resources.GetObject("btnRecord.Image")));
-            this.btnRecord.Location = new System.Drawing.Point(329, 5);
+            this.btnRecord.Location = new System.Drawing.Point(329, 3);
             this.btnRecord.Name = "btnRecord";
             this.btnRecord.Size = new System.Drawing.Size(34, 31);
             this.btnRecord.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -103,7 +106,7 @@
             this.altoButton1.ForeColor = System.Drawing.Color.Black;
             this.altoButton1.Inactive1 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.altoButton1.Inactive2 = System.Drawing.SystemColors.ButtonFace;
-            this.altoButton1.Location = new System.Drawing.Point(489, 5);
+            this.altoButton1.Location = new System.Drawing.Point(489, 4);
             this.altoButton1.Name = "altoButton1";
             this.altoButton1.Radius = 10;
             this.altoButton1.Size = new System.Drawing.Size(46, 30);
@@ -119,7 +122,7 @@
             this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(449, 5);
+            this.pictureBox2.Location = new System.Drawing.Point(449, 3);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(34, 31);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -132,7 +135,7 @@
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(409, 5);
+            this.pictureBox1.Location = new System.Drawing.Point(409, 3);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(34, 31);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -145,7 +148,7 @@
             this.altoButton3.BackColor = System.Drawing.Color.Transparent;
             this.altoButton3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.altoButton3.Image = ((System.Drawing.Image)(resources.GetObject("altoButton3.Image")));
-            this.altoButton3.Location = new System.Drawing.Point(369, 5);
+            this.altoButton3.Location = new System.Drawing.Point(369, 3);
             this.altoButton3.Name = "altoButton3";
             this.altoButton3.Size = new System.Drawing.Size(34, 31);
             this.altoButton3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -159,9 +162,9 @@
             this.altoTextBox1.Br = System.Drawing.Color.White;
             this.altoTextBox1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.altoTextBox1.ForeColor = System.Drawing.Color.DimGray;
-            this.altoTextBox1.Location = new System.Drawing.Point(3, 0);
+            this.altoTextBox1.Location = new System.Drawing.Point(1, 1);
             this.altoTextBox1.Name = "altoTextBox1";
-            this.altoTextBox1.Size = new System.Drawing.Size(325, 35);
+            this.altoTextBox1.Size = new System.Drawing.Size(325, 34);
             this.altoTextBox1.TabIndex = 0;
             this.altoTextBox1.TabStop = false;
             this.altoTextBox1.TextChanged += new System.EventHandler(this.altoTextBox1_TextChanged);
@@ -169,7 +172,6 @@
             // 
             // panel3
             // 
-            this.panel3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel3.BackgroundImage")));
             this.panel3.Location = new System.Drawing.Point(0, 59);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(538, 604);
@@ -178,6 +180,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Black;
+            this.panel2.Controls.Add(this.roundedImage1);
             this.panel2.Controls.Add(this.statusLbl);
             this.panel2.Controls.Add(this.nameLbl);
             this.panel2.Controls.Add(this.zeroitClassicRndButton1);
@@ -195,7 +198,7 @@
             this.statusLbl.BackColor = System.Drawing.Color.Transparent;
             this.statusLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.statusLbl.ForeColor = System.Drawing.Color.Turquoise;
-            this.statusLbl.Location = new System.Drawing.Point(250, 33);
+            this.statusLbl.Location = new System.Drawing.Point(70, 31);
             this.statusLbl.Name = "statusLbl";
             this.statusLbl.Size = new System.Drawing.Size(41, 15);
             this.statusLbl.TabIndex = 0;
@@ -205,19 +208,19 @@
             // 
             this.nameLbl.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nameLbl.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.nameLbl.Location = new System.Drawing.Point(136, 8);
+            this.nameLbl.Location = new System.Drawing.Point(68, 8);
             this.nameLbl.Name = "nameLbl";
-            this.nameLbl.Size = new System.Drawing.Size(275, 23);
+            this.nameLbl.Size = new System.Drawing.Size(228, 23);
             this.nameLbl.TabIndex = 1;
             this.nameLbl.Text = "Wlodzimierz Kowjako";
-            this.nameLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.nameLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // zeroitClassicRndButton1
             // 
             this.zeroitClassicRndButton1.AllowClickAnimation = true;
             this.zeroitClassicRndButton1.AllowTransparency = true;
-            this.zeroitClassicRndButton1.BackColor = System.Drawing.Color.Gray;
-            this.zeroitClassicRndButton1.ButtonColor = System.Drawing.Color.Gray;
+            this.zeroitClassicRndButton1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.zeroitClassicRndButton1.ButtonColor = System.Drawing.Color.WhiteSmoke;
             this.zeroitClassicRndButton1.ButtonPressOffset = 0;
             this.zeroitClassicRndButton1.CenterColor = System.Drawing.Color.White;
             this.zeroitClassicRndButton1.ClickMaxOffset = 10;
@@ -225,10 +228,10 @@
             this.zeroitClassicRndButton1.ClickSpeed = 1;
             this.zeroitClassicRndButton1.EdgeWidth = 1;
             this.zeroitClassicRndButton1.LightAngle = 50F;
-            this.zeroitClassicRndButton1.Location = new System.Drawing.Point(487, 8);
+            this.zeroitClassicRndButton1.Location = new System.Drawing.Point(504, 16);
             this.zeroitClassicRndButton1.Name = "zeroitClassicRndButton1";
             this.zeroitClassicRndButton1.RecessDepth = 0;
-            this.zeroitClassicRndButton1.Size = new System.Drawing.Size(42, 40);
+            this.zeroitClassicRndButton1.Size = new System.Drawing.Size(23, 23);
             this.zeroitClassicRndButton1.TabIndex = 0;
             this.zeroitClassicRndButton1.Text = "X";
             this.zeroitClassicRndButton1.UseVisualStyleBackColor = false;
@@ -239,6 +242,16 @@
             // 
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick_1);
+            // 
+            // roundedImage1
+            // 
+            this.roundedImage1.BackColor = System.Drawing.Color.DarkGray;
+            this.roundedImage1.Location = new System.Drawing.Point(11, 3);
+            this.roundedImage1.Name = "roundedImage1";
+            this.roundedImage1.Size = new System.Drawing.Size(51, 50);
+            this.roundedImage1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.roundedImage1.TabIndex = 2;
+            this.roundedImage1.TabStop = false;
             // 
             // Form1
             // 
@@ -258,6 +271,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.altoButton3)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.roundedImage1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -278,6 +292,7 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox btnRecord;
+        private RoundedImage roundedImage1;
     }
 }
 

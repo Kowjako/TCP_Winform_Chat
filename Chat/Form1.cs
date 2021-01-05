@@ -106,19 +106,19 @@ namespace Chat
                 {
                     if (img.Left == 5) continue;
                     else
-                    if (img.Left != 270) img.Left = 270;
+                    if (img.Left != 270) img.Left = 266;
                 }
                 foreach (SendFile file in filelist)
                 {
                     if (file.Left == 5) continue;
                     else
-                    if (file.Left != 270) file.Left = 270;
+                    if (file.Left != 270) file.Left = 266;
                 }
                 foreach(SendAudio aud in audiolist)
                 {
                     if (aud.Left == 5) continue;
                     else
-                    if (aud.Left != this.Width - 168) aud.Left = this.Width - 168;
+                    if (aud.Left != this.Width - 168) aud.Left = this.Width - 178;
                 }
                 foreach (SendVideo vid in videolist)
                 {
@@ -393,10 +393,11 @@ namespace Chat
 
         private void altoButton3_Click_1(object sender, EventArgs e)
         {
+            String path;
             SendImage image = new SendImage();
-            if (image.SetImage() != null)
+            if ((path = image.SetImage()) != null)
             {
-                FileStream fs = new FileStream(image.SetImage(), FileMode.Open, FileAccess.Read);
+                FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);
                 byte[] bytes = Encoding.UTF8.GetBytes("photo");
                 stream.Write(bytes, 0, bytes.Length);
                 SendFileInfo(fs);
@@ -614,7 +615,7 @@ namespace Chat
             {
                 byte[] bytes = Encoding.UTF8.GetBytes("attachment");
                 stream.Write(bytes, 0, bytes.Length);
-                FileStream fs = new FileStream(file.SetFile(), FileMode.Open, FileAccess.Read);
+                FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
                 file.SetFile(fs.Name);
                 file.FileName = getNameOfFile(fs.Name);
                 file.FileSize = Convert.ToString(fs.Length);
