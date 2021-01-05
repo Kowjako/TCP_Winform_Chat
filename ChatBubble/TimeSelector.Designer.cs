@@ -28,25 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.LabelRoundCorner = new LabelRoundCorners();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.LabelRoundCorner = new LabelRoundCorners();
             this.SuspendLayout();
-            // 
-            // lrc1
-            // 
-            this.LabelRoundCorner._BackColor = System.Drawing.Color.Pink;
-            this.LabelRoundCorner.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.LabelRoundCorner.AutoSize = true;
-            this.LabelRoundCorner.Font = new System.Drawing.Font("Corbel", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelRoundCorner.Location = new System.Drawing.Point(276, 5);
-            this.LabelRoundCorner.MaximumSize = new System.Drawing.Size(130, 0);
-            this.LabelRoundCorner.MinimumSize = new System.Drawing.Size(110, 0);
-            this.LabelRoundCorner.Name = "lrc1";
-            this.LabelRoundCorner.Size = new System.Drawing.Size(110, 19);
-            this.LabelRoundCorner.TabIndex = 0;
-            this.LabelRoundCorner.Text = "28 December";
-            this.LabelRoundCorner.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel1
             // 
@@ -68,10 +53,27 @@
             this.panel2.Size = new System.Drawing.Size(277, 2);
             this.panel2.TabIndex = 2;
             // 
+            // LabelRoundCorner
+            // 
+            this.LabelRoundCorner._BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.LabelRoundCorner.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.LabelRoundCorner.AutoSize = true;
+            this.LabelRoundCorner.BackColor = System.Drawing.Color.Transparent;
+            this.LabelRoundCorner.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LabelRoundCorner.Location = new System.Drawing.Point(276, 5);
+            this.LabelRoundCorner.MaximumSize = new System.Drawing.Size(130, 0);
+            this.LabelRoundCorner.MinimumSize = new System.Drawing.Size(110, 0);
+            this.LabelRoundCorner.Name = "LabelRoundCorner";
+            this.LabelRoundCorner.Size = new System.Drawing.Size(110, 20);
+            this.LabelRoundCorner.TabIndex = 0;
+            this.LabelRoundCorner.Text = "28 December";
+            this.LabelRoundCorner.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // TimeSelector
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.LabelRoundCorner);

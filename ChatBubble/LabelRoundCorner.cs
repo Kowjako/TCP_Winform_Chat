@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -10,8 +11,9 @@ public class LabelRoundCorners : Label
     public LabelRoundCorners()
     {
         this.DoubleBuffered = true;
+        SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+        this.BackColor = Color.Transparent;
     }
-
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
