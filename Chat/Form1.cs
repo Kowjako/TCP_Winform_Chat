@@ -148,7 +148,7 @@ namespace Chat
         }
         private int getPosition()
         {
-            if (msglist.Count == 0 && receivelist.Count == 0 && photolist.Count == 0 && filelist.Count == 0 && audiolist.Count == 0 && videolist.Count==0) return 30;
+            if (msglist.Count == 0 && receivelist.Count == 0 && photolist.Count == 0 && filelist.Count == 0 && audiolist.Count == 0 && videolist.Count==0) return 40;
             if (lastObject is MyBubble)
             {
                 MyBubble tmp = (MyBubble)lastObject;
@@ -633,9 +633,7 @@ namespace Chat
         }
         private string getNameOfFile(string path)
         {
-            int index = path.LastIndexOf(@"\");
-            path = path.Replace(" ", string.Empty);
-            return path.Substring(index+1);
+            return Path.GetFileName(path);
         }
     }
 }
