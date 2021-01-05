@@ -144,6 +144,24 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pdf.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ppt.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\word.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xlsx.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mp3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mp4.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

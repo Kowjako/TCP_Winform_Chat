@@ -27,6 +27,12 @@ namespace ChatBubble
             }
             set
             {
+                if (value.Contains("pdf")) pb1.Image = Properties.Resources.pdf;
+                if (value.Contains("doc") || value.Contains("docx")) pb1.Image = Properties.Resources.word;
+                if (value.Contains("xls") || value.Contains("xlsx")) pb1.Image = Properties.Resources.xlsx;
+                if (value.Contains("mp4")) pb1.Image = Properties.Resources.mp4;
+                if (value.Contains("mp3")) pb1.Image = Properties.Resources.mp3;
+                if (value.Contains("ppt") || value.Contains("pptx")) pb1.Image = Properties.Resources.ppt;
                 label2.Text = value;
             }
         }
@@ -61,7 +67,7 @@ namespace ChatBubble
         public string OpenFileDialog()
         {
             OpenFileDialog fd = new OpenFileDialog();
-            fd.Filter = "Files | *.pdf; *.xlsx; *.doc; *.docx; *.ppt";
+            fd.Filter = "Files | *.pdf; *.xlsx; *.doc; *.docx; *.ppt; *.mp3; *.mp4;";
             fd.Title = "Choose a file";
             if (fd.ShowDialog() == DialogResult.OK)
             {
