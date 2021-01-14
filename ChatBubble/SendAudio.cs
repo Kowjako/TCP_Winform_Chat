@@ -63,10 +63,29 @@ namespace ChatBubble
             filename = path;
         }
         private string filename;
+        DateTime dt;
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            Process.Start(filename);
+            macTrackBar1.Value = 0;
+            Timer t = new Timer();
+            dt = DateTime.Now;
+            using (System.Media.SoundPlayer player = new System.Media.SoundPlayer { SoundLocation = filename })
+            {
+                macTrackBar1.Minimum = 0;
+                macTrackBar1.Maximum = Int32.Parse(label2.Text.Substring(label2.Text.LastIndexOf(':') + 1)) * 1000;
+                t.Interval = 150; //ms
+                t.Tick += T_Tick;
+                t.Start();
+                player.Play();
+            }
         }
+        private void T_Tick(object sender, EventArgs e)
+        {
+            if (macTrackBar1.Value >= macTrackBar1.Maximum) ((Timer)sender).Stop();
+            else
+                macTrackBar1.Value = Convert.ToInt32(DateTime.Now.Subtract(dt).TotalMilliseconds);
+        }
+
         private const int WS_EX_TRANSPARENT = 0x20;
 
         private int opacity = 0;
