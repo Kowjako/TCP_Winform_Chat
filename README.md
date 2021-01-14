@@ -9,7 +9,8 @@ Zwykly chat uzywany do komunikacji pomiedzy dwoma klientami
 - Wysyłka plików (.pdf, .docx, .tex, .mp3, .mp4, itd.)
 - Wysyłka live-video
 #
-![Screenshot_1](https://user-images.githubusercontent.com/19534189/90953705-354d1100-e46e-11ea-95bc-a228f98273a4.png)
+![Screenshot_1](https://user-images.githubusercontent.com/19534189/104617267-87940600-568b-11eb-95b4-555ba63bb20e.png)
+![Screenshot_2](https://user-images.githubusercontent.com/19534189/104617269-882c9c80-568b-11eb-93c2-84d6e1155d12.png)
 # Server
 Zwykly serwer ktory pozwala podlaczyc 2 klientow i sluzy do przeslania obrazkow oraz mailow od jednego klienta innemu. Pliki przesylane za pomoca protokolu TCP, wiec zadna czesc
 pliku nie jest utracona po drodze.
