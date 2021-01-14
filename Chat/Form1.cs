@@ -10,7 +10,6 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using AForge.Video;
-using AForge;
 using AForge.Video.DirectShow;
 using Accord.Video.FFMPEG;
 using Newtonsoft.Json;
@@ -26,9 +25,8 @@ namespace Chat
             public string FILETYPE = "";
             public string FILESIZE = "";
         }
-
-        /*Variables*/
-        #region
+        
+        #region Chat Variables
         private FilterInfoCollection VideoCaptureDevices;
         private VideoFileWriter FileWriter = new VideoFileWriter();
         private VideoCaptureDevice FinalVideo = null;
@@ -46,6 +44,7 @@ namespace Chat
         Random rnd = new Random();
         BinaryReader reader;
         BinaryWriter writer;
+        Thread receiveThread;
         private System.Drawing.Point lastpoint;
         private static int port = 8888;
         private static string ip = "127.0.0.1";
@@ -58,15 +57,23 @@ namespace Chat
         private static SendFile file;
         private static SendAudio audio;
         private static SendVideo wideo;
+        static string audiofilename;
+        private object lastObject = 30;
+        private string fileSizeString = null;
+        private string sendmsg = "";
+        private int isRecord = 1;
+        private WaveIn waveIn;
+        private WaveFileWriter wavewriter;
         #endregion
+
         public Form1()
         {
             InitializeComponent();
             altoTextBox1.Text = "Write message";
             client = new TcpClient();
             client.Connect(ip, port);
-            Thread t = new Thread(new ThreadStart(ReceiveMessage));
-            t.Start();
+            receiveThread = new Thread(new ThreadStart(ReceiveMessage));
+            receiveThread.Start();
             stream = client.GetStream();
             reader = new BinaryReader(stream);
             writer = new BinaryWriter(stream);
@@ -144,6 +151,7 @@ namespace Chat
             msglist.Add(msg);
             lastObject = msg;
         }
+
         private int getPosition()
         {
             if (msglist.Count == 0 && receivelist.Count == 0 && photolist.Count == 0 && filelist.Count == 0 && audiolist.Count == 0 && videolist.Count==0) return 40;
@@ -179,6 +187,7 @@ namespace Chat
             }
             else return 0;
         }
+
         public void SendFileInfo(FileStream fs)
         {
             try
@@ -193,6 +202,7 @@ namespace Chat
             {
             }
         }
+
         private void SendFile(FileStream fs)
         {
             byte[] bytes = new byte[256];
@@ -209,10 +219,12 @@ namespace Chat
                 altoTextBox1.Text = "Sending file error";
             }
         }
+
         private void panel2_MouseDown(object sender, MouseEventArgs e)
         {
             lastpoint = new System.Drawing.Point(e.X, e.Y);
         }
+
         private void panel2_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -221,6 +233,7 @@ namespace Chat
                 this.Top += e.Y - lastpoint.Y;
             }
         }
+
         private void altoButton1_Click(object sender, EventArgs e)
         {
             if (altoTextBox1.Text != "" && altoTextBox1.Text != "Write message")
@@ -240,13 +253,16 @@ namespace Chat
 
         private void zeroitClassicRndButton1_Click(object sender, EventArgs e)
         {
+            receiveThread.Abort();
             byte[] data = Encoding.UTF8.GetBytes("expectedexit");
             stream.Write(data, 0, data.Length);
-            if (stream != null)  stream.Close();
-            if (client != null) client.Close();
-            this.Close();
-        }
-        private object lastObject = 30;
+            writer.Close();
+            reader.Close();
+            stream.Close();
+            client.Close();
+            Application.Exit();
+        }      
+
         private void ReceiveBubble(string text)
         {
             string output = new string(text.Where(c => char.IsLetter(c) || char.IsDigit(c) || char.IsSymbol(c) || char.IsSeparator(c) || char.IsPunctuation(c)).ToArray());
@@ -263,15 +279,14 @@ namespace Chat
             receivelist.Add(msg);
             lastObject = msg;
         }
+
         private void altoTextBox2_TextChanged(object sender, EventArgs e)
         {
             statusLbl.Text = "typing...";
         }
-        private string sendmsg = "";
+     
         private void timer1_Tick_1(object sender, EventArgs e)
         {
-            sendmsg = statusLbl.Text;
-            if (statusLbl.Text == sendmsg) statusLbl.Text = "online";
             if (gettedMessage != "")
             {
                 ReceiveBubble(gettedMessage);
@@ -334,12 +349,13 @@ namespace Chat
                 CheckScrollBar();
             }
         }
+
         public static TimeSpan GetWavFileDuration(string fileName)
         {
             WaveFileReader wf = new WaveFileReader(fileName);
             return new TimeSpan(wf.TotalTime.Hours,wf.TotalTime.Minutes,wf.TotalTime.Seconds);
         }
-        private string fileSizeString = null;
+
         public string[] SaveFileOnPC()
         {
             string fileName = reader.ReadString();
@@ -351,6 +367,7 @@ namespace Chat
             }
             return new string[] { fileName, Convert.ToString(fileSize) };
         }
+
         public void ReceiveMessage()
         {
             while (true)
@@ -391,7 +408,7 @@ namespace Chat
 
         private void altoButton3_Click_1(object sender, EventArgs e)
         {
-            String path;
+            string path;
             SendImage image = new SendImage();
             if ((path = image.SetImage()) != null)
             {
@@ -410,9 +427,7 @@ namespace Chat
                 photolist.Add(image);
             }
         }
-        private int isRecord = 1;
-        private WaveIn waveIn;
-        private WaveFileWriter wavewriter;
+
         void waveIn_DataAvailable(object sender, WaveInEventArgs e)
         {
             if (this.InvokeRequired)
@@ -425,7 +440,7 @@ namespace Chat
                 wavewriter.Flush();
             }
         }
-        static string audiofilename;
+
         private void pictureBox2_Click(object sender, EventArgs e)
         {  
             switch (isRecord)
@@ -465,6 +480,7 @@ namespace Chat
                     }
             }
         }
+
         private void SendAudioMessage()
         {
             if (File.Exists(audiofilename) && isRecord == 1)
@@ -492,13 +508,18 @@ namespace Chat
                 //Ending add control
             }
         }
+
         private void WaveIn_RecordingStopped(object sender, StoppedEventArgs e)
         {
             throw new NotImplementedException();
         }
+
+        #region  Variables for VideoRecording
         private string isRecording = "false";
         RoundedImage videoPanel = new RoundedImage();
         static string videofilename;
+        #endregion
+
         private void btnRecord_Click(object sender, EventArgs e)
         {
             switch(isRecording)
@@ -561,10 +582,8 @@ namespace Chat
                 //Ending add control
             }
         }
-
-
+  
         bool isTyped = false;
-
 
         private void altoTextBox1_Enter(object sender, EventArgs e)
         {
@@ -629,6 +648,7 @@ namespace Chat
                 filelist.Add(file);
             }
         }
+
         private string getNameOfFile(string path)
         {
             return Path.GetFileName(path);

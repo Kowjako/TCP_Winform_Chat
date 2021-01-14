@@ -14,10 +14,14 @@ namespace Server
 {  
     public class Server
     {
+        #region Variables
         static TcpListener listener;
         private FileDetails fileData = new FileDetails();
         List<ClientObject> clients = new List<ClientObject>();
+        #endregion 
+
         public static object locker = new object();
+
         protected internal void AddConnection(ClientObject x)
         {
             if (clients.Count < 2)
@@ -34,6 +38,7 @@ namespace Server
                 }
             }
         }
+
         protected internal void SendFile(FileDetails fd, string fs, string id, string type)
         {
             FileStream fstream = File.Open(fs, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
@@ -52,18 +57,21 @@ namespace Server
                 }
             }
         }
+
         protected internal void RemoveConnection(string id)
         {
             ClientObject tmp = clients.FirstOrDefault(c => c.Id == id);
             if (tmp != null) clients.Remove(tmp);
             Console.WriteLine($"Client has left the chat");
         }
+
         protected internal void Disconnect()
         {
             listener.Stop();
             foreach (ClientObject t in clients) t.Close();
             Environment.Exit(0);
         }
+
         protected internal void Listen()
         {
             try

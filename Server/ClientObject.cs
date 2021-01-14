@@ -19,6 +19,8 @@ namespace Server
             public string FILETYPE = "";
             public string FILESIZE = "";
         }
+
+        #region Variables
         private static FileDetails fileDet = new FileDetails();
         private string username;
         private string servermsg = "";
@@ -27,6 +29,8 @@ namespace Server
         static TcpClient client;
         Server server;
         Random rnd = new Random();
+        #endregion
+
         public ClientObject(TcpClient x, Server y)
         {
             server = y;
@@ -34,6 +38,7 @@ namespace Server
             Id = Guid.NewGuid().ToString();
             y.AddConnection(this);
         }
+
         private void GetFileDetails()
         {
             try
@@ -52,6 +57,7 @@ namespace Server
                 Console.WriteLine("GetFileDetails Error in ClientObject class");
             }
         }
+
         public void GetFile(string type)
         {
             mark = rnd.Next(1000, 9999);
@@ -72,12 +78,15 @@ namespace Server
                 Console.WriteLine(eR.ToString() + " GET FILE ERROR");
             }
         }
+
         public static int mark = 0;
+
         private void SendFile(string type)
         {
             server.SendFile(fileDet, $"{type}{mark}{fileDet.FILETYPE}", Id, type);
             Console.WriteLine("file has sent");
         }
+
         private void FileGetterAndSender(string type, string username, string output)
         {
             string servermsg;
@@ -145,6 +154,7 @@ namespace Server
                 Console.WriteLine(servermsg);
             }
         }
+
         public string GetMessage()
         {
             byte[] data = new byte[256];
@@ -158,6 +168,7 @@ namespace Server
             while (stream.DataAvailable);
             return sb.ToString();
         }
+
         protected internal void Close()
         {
             if (stream != null) stream.Close();
