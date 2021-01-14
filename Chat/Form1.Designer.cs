@@ -40,11 +40,11 @@
             this.altoTextBox1 = new AltoControls.AltoTextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.roundedImage1 = new Chat.RoundedImage();
             this.statusLbl = new System.Windows.Forms.Label();
             this.nameLbl = new System.Windows.Forms.Label();
             this.zeroitClassicRndButton1 = new Zeroit.Framework.Button.ZeroitClassicRndButton();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.roundedImage1 = new Chat.RoundedImage();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnRecord)).BeginInit();
@@ -172,6 +172,7 @@
             // 
             // panel3
             // 
+            this.panel3.BackColor = System.Drawing.SystemColors.Control;
             this.panel3.Location = new System.Drawing.Point(0, 59);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(538, 604);
@@ -191,6 +192,17 @@
             this.panel2.TabIndex = 0;
             this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
             this.panel2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseMove);
+            // 
+            // roundedImage1
+            // 
+            this.roundedImage1.BackColor = System.Drawing.Color.DarkGray;
+            this.roundedImage1.Image = ((System.Drawing.Image)(resources.GetObject("roundedImage1.Image")));
+            this.roundedImage1.Location = new System.Drawing.Point(11, 3);
+            this.roundedImage1.Name = "roundedImage1";
+            this.roundedImage1.Size = new System.Drawing.Size(51, 50);
+            this.roundedImage1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.roundedImage1.TabIndex = 2;
+            this.roundedImage1.TabStop = false;
             // 
             // statusLbl
             // 
@@ -242,16 +254,6 @@
             // 
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick_1);
-            // 
-            // roundedImage1
-            // 
-            this.roundedImage1.BackColor = System.Drawing.Color.DarkGray;
-            this.roundedImage1.Location = new System.Drawing.Point(11, 3);
-            this.roundedImage1.Name = "roundedImage1";
-            this.roundedImage1.Size = new System.Drawing.Size(51, 50);
-            this.roundedImage1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.roundedImage1.TabIndex = 2;
-            this.roundedImage1.TabStop = false;
             // 
             // Form1
             // 

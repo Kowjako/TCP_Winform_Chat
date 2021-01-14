@@ -77,8 +77,6 @@ namespace Chat
 
             VideoCaptureDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             captureDevice = new VideoCaptureDeviceForm();
-
-            nameLbl.Text = $"User{rnd.Next(100)}";
             panel3.HorizontalScroll.Maximum = 0;
             panel3.AutoScroll = false;
             panel3.HorizontalScroll.Enabled = false;
@@ -118,7 +116,7 @@ namespace Chat
                 {
                     if (aud.Left == 5) continue;
                     else
-                    if (aud.Left != this.Width - 168) aud.Left = this.Width - 178;
+                    if (aud.Left != this.Width - 240) aud.Left = this.Width - 250;
                 }
                 foreach (SendVideo vid in videolist)
                 {
@@ -484,7 +482,7 @@ namespace Chat
                 }
                 //Ending send file
                 //Locate control on GUI
-                audio.Left = this.Width - 158;
+                audio.Left = this.Width - 230;
                 CheckScrollBar();
                 audio.Top = getPosition();
                 audio.AddTimeLabelSender();
