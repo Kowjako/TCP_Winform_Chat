@@ -18,3 +18,8 @@ pliku nie jest utracona po drodze.
 # Biblioteka ChatBubble
 Source code tej biblioteki znajduje sie w branchu ChatLibrary, ta biblioteka realizuje chatbubbles dla wyslanego oraz dostanego maila oraz dla DateSelector ktory oddziela maile 
 na gorze i pisze obecna date, oraz realizuje wyslane oraz dostane obrazki.
+# Postępowanie po uruchomieniu projektu z GitHub
+1. Klonujemy branch Master oraz ChatLibrary
+2. Odtwarzamy solution dla ChatLibrary dodajemy do References MACTrackBarLib.dll
+3. Kompilujemy ChatLibrary
+4. W razie problemów ze skompilowaniem Chat+Server dodajemy do References skompilowaną biblioteke ChatLibrary bin/Debug/ChatLibrary.dll w **kroku 3** 
