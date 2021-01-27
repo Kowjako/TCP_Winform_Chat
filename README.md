@@ -17,7 +17,7 @@ pliku nie jest utracona po drodze.
 ![Screenshot_1](https://user-images.githubusercontent.com/19534189/89656017-3fe2a480-d8cb-11ea-802d-7364da77b315.png)
 # Biblioteka ChatBubble
 Source code tej biblioteki znajduje sie w branchu ChatLibrary, ta biblioteka realizuje chatbubbles dla wyslanego oraz dostanego maila oraz dla DateSelector ktory oddziela maile 
-na gorze i pisze obecna date, oraz realizuje wyslane oraz dostane obrazki.
+na gorze i pisze obecna date, oraz realizuje wyslane oraz dostane obrazki/wiadomości głosowe/pliki itd.
 # Postępowanie po uruchomieniu projektu z GitHub
 1. Klonujemy branch Master oraz ChatLibrary
 2. Odtwarzamy solution dla ChatLibrary dodajemy do References MACTrackBarLib.dll
